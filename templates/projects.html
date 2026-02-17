@@ -1,0 +1,201 @@
+{% extends "base.html" %}
+
+{% block title %}Projects - Hirthick M{% endblock %}
+
+{% block content %}
+<!-- Projects Hero -->
+<section class="hero" style="min-height: 60vh;">
+    <div class="container" style="text-align: center;">
+        <h1 style="font-family: var(--font-serif); font-size: 4rem; color: var(--gold-primary); margin-bottom: 1rem;">
+            My Projects
+        </h1>
+        <p style="font-size: 1.3rem; color: var(--white-soft); max-width: 800px; margin: 0 auto;">
+            Building intelligent solutions that make a difference
+        </p>
+    </div>
+</section>
+
+<!-- Featured Project: MedClinic AI -->
+<section class="fade-in">
+    <div class="container">
+        <h2 class="section-title">Featured Project</h2>
+        <div class="project-card" style="max-width: 1200px; margin: 0 auto; padding: 3rem;">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: start;">
+                <div>
+                    <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1.5rem;">
+                        <i class="fas fa-heartbeat" style="font-size: 3rem; color: var(--gold-primary);"></i>
+                        <h3
+                            style="font-family: var(--font-serif); font-size: 2.5rem; color: var(--gold-primary); margin: 0;">
+                            MedClinic AI
+                        </h3>
+                    </div>
+
+                    <p style="font-size: 1.2rem; color: var(--gold-light); margin-bottom: 2rem;">
+                        Clinical Support System Powered by Artificial Intelligence
+                    </p>
+
+                    <div style="margin-bottom: 2rem;">
+                        <span class="project-tag">Flask</span>
+                        <span class="project-tag">Python</span>
+                        <span class="project-tag">MongoDB</span>
+                        <span class="project-tag">AI/ML</span>
+                        <span class="project-tag">Gemini API</span>
+                        <span class="project-tag">Healthcare</span>
+                    </div>
+
+                    <div style="margin-bottom: 2rem;">
+                        <a href="#" class="btn btn-primary" style="margin-right: 1rem;">
+                            <i class="fas fa-external-link-alt"></i> Live Demo
+                        </a>
+                        <a href="https://github.com/hirthick-m/medclinic-ai" target="_blank" class="btn btn-secondary">
+                            <i class="fab fa-github"></i> View Code
+                        </a>
+                    </div>
+                </div>
+
+                <div
+                    style="background: rgba(10, 17, 40, 0.5); padding: 2rem; border-radius: 15px; border: 1px solid rgba(212, 175, 55, 0.2);">
+                    <i class="fas fa-stethoscope"
+                        style="font-size: 8rem; color: var(--gold-primary); opacity: 0.2; display: block; text-align: center;"></i>
+                </div>
+            </div>
+
+            <!-- Problem Statement -->
+            <div style="margin-top: 3rem; padding-top: 3rem; border-top: 1px solid rgba(212, 175, 55, 0.2);">
+                <h4 style="color: var(--gold-primary); font-size: 1.5rem; margin-bottom: 1rem;">
+                    <i class="fas fa-exclamation-circle"></i> Problem Statement
+                </h4>
+                <p style="font-size: 1.1rem; line-height: 1.8; margin-bottom: 2rem;">
+                    Healthcare professionals often face challenges in quickly accessing relevant clinical information,
+                    analyzing patient symptoms, and making informed decisions. Traditional systems lack intelligent
+                    support and real-time assistance, leading to delays and potential oversights in patient care.
+                </p>
+
+                <!-- Solution -->
+                <h4 style="color: var(--gold-primary); font-size: 1.5rem; margin-bottom: 1rem;">
+                    <i class="fas fa-lightbulb"></i> Solution
+                </h4>
+                <p style="font-size: 1.1rem; line-height: 1.8; margin-bottom: 2rem;">
+                    MedClinic AI is an intelligent clinical support system that leverages artificial intelligence to
+                    provide real-time symptom analysis, diagnostic suggestions, and treatment recommendations. The
+                    platform uses advanced AI models to analyze patient data and offer evidence-based clinical insights,
+                    helping healthcare providers make faster, more informed decisions.
+                </p>
+
+                <!-- Key Features -->
+                <h4 style="color: var(--gold-primary); font-size: 1.5rem; margin-bottom: 1rem;">
+                    <i class="fas fa-star"></i> Key Features
+                </h4>
+                <div
+                    style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
+                    <div
+                        style="background: rgba(10, 17, 40, 0.3); padding: 1.5rem; border-radius: 10px; border-left: 3px solid var(--gold-primary);">
+                        <h5 style="color: var(--gold-light); margin-bottom: 0.5rem;">
+                            <i class="fas fa-brain"></i> AI-Powered Symptom Analysis
+                        </h5>
+                        <p style="font-size: 0.95rem; line-height: 1.6;">
+                            Advanced AI algorithms analyze patient symptoms and provide accurate diagnostic suggestions
+                        </p>
+                    </div>
+
+                    <div
+                        style="background: rgba(10, 17, 40, 0.3); padding: 1.5rem; border-radius: 10px; border-left: 3px solid var(--gold-primary);">
+                        <h5 style="color: var(--gold-light); margin-bottom: 0.5rem;">
+                            <i class="fas fa-pills"></i> Treatment Recommendations
+                        </h5>
+                        <p style="font-size: 0.95rem; line-height: 1.6;">
+                            Evidence-based medication suggestions and home remedies for common conditions
+                        </p>
+                    </div>
+
+                    <div
+                        style="background: rgba(10, 17, 40, 0.3); padding: 1.5rem; border-radius: 10px; border-left: 3px solid var(--gold-primary);">
+                        <h5 style="color: var(--gold-light); margin-bottom: 0.5rem;">
+                            <i class="fas fa-database"></i> Patient Data Management
+                        </h5>
+                        <p style="font-size: 0.95rem; line-height: 1.6;">
+                            Secure MongoDB database for storing and managing patient records and consultations
+                        </p>
+                    </div>
+
+                    <div
+                        style="background: rgba(10, 17, 40, 0.3); padding: 1.5rem; border-radius: 10px; border-left: 3px solid var(--gold-primary);">
+                        <h5 style="color: var(--gold-light); margin-bottom: 0.5rem;">
+                            <i class="fas fa-exclamation-triangle"></i> Emergency Alerts
+                        </h5>
+                        <p style="font-size: 0.95rem; line-height: 1.6;">
+                            Intelligent system to identify critical symptoms and trigger emergency protocols
+                        </p>
+                    </div>
+
+                    <div
+                        style="background: rgba(10, 17, 40, 0.3); padding: 1.5rem; border-radius: 10px; border-left: 3px solid var(--gold-primary);">
+                        <h5 style="color: var(--gold-light); margin-bottom: 0.5rem;">
+                            <i class="fas fa-chart-line"></i> Analytics Dashboard
+                        </h5>
+                        <p style="font-size: 0.95rem; line-height: 1.6;">
+                            Comprehensive analytics and insights on patient trends and common conditions
+                        </p>
+                    </div>
+
+                    <div
+                        style="background: rgba(10, 17, 40, 0.3); padding: 1.5rem; border-radius: 10px; border-left: 3px solid var(--gold-primary);">
+                        <h5 style="color: var(--gold-light); margin-bottom: 0.5rem;">
+                            <i class="fas fa-mobile-alt"></i> Responsive Design
+                        </h5>
+                        <p style="font-size: 0.95rem; line-height: 1.6;">
+                            Fully responsive interface accessible on desktop, tablet, and mobile devices
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Tech Stack -->
+                <h4 style="color: var(--gold-primary); font-size: 1.5rem; margin-bottom: 1rem;">
+                    <i class="fas fa-code"></i> Technology Stack
+                </h4>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+                    <div
+                        style="background: rgba(212, 175, 55, 0.1); padding: 1rem; border-radius: 8px; text-align: center;">
+                        <strong style="color: var(--gold-light);">Backend:</strong> Python Flask
+                    </div>
+                    <div
+                        style="background: rgba(212, 175, 55, 0.1); padding: 1rem; border-radius: 8px; text-align: center;">
+                        <strong style="color: var(--gold-light);">Database:</strong> MongoDB
+                    </div>
+                    <div
+                        style="background: rgba(212, 175, 55, 0.1); padding: 1rem; border-radius: 8px; text-align: center;">
+                        <strong style="color: var(--gold-light);">AI:</strong> Gemini 2.0 Flash
+                    </div>
+                    <div
+                        style="background: rgba(212, 175, 55, 0.1); padding: 1rem; border-radius: 8px; text-align: center;">
+                        <strong style="color: var(--gold-light);">Frontend:</strong> HTML, CSS, JavaScript
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Other Projects Section -->
+<section class="fade-in" style="padding-bottom: 6rem;">
+    <div class="container">
+        <h2 class="section-title">More Projects Coming Soon</h2>
+        <div class="glass-card" style="max-width: 800px; margin: 0 auto; text-align: center; padding: 3rem;">
+            <i class="fas fa-rocket" style="font-size: 4rem; color: var(--gold-primary); margin-bottom: 1.5rem;"></i>
+            <h3 style="color: var(--gold-primary); font-size: 1.8rem; margin-bottom: 1rem;">
+                Currently Building Amazing Things
+            </h3>
+            <p style="font-size: 1.1rem; line-height: 1.8; margin-bottom: 2rem;">
+                I'm constantly working on new projects that push the boundaries of web development and AI integration.
+                Stay tuned for more innovative solutions!
+            </p>
+            <p style="font-size: 1rem; color: var(--white-soft);">
+                Have a project idea or want to collaborate? Let's connect!
+            </p>
+            <div style="margin-top: 2rem;">
+                <a href="{{ url_for('contact') }}" class="btn btn-primary">Get In Touch</a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,148 @@
+{% extends "base.html" %}
+
+{% block title %}Contact - Hirthick M{% endblock %}
+
+{% block content %}
+<!-- Contact Hero -->
+<section class="hero" style="min-height: 60vh;">
+    <div class="container" style="text-align: center;">
+        <h1 style="font-family: var(--font-serif); font-size: 4rem; color: var(--gold-primary); margin-bottom: 1rem;">
+            Get In Touch
+        </h1>
+        <p style="font-size: 1.3rem; color: var(--white-soft); max-width: 800px; margin: 0 auto;">
+            Let's collaborate and build something amazing together
+        </p>
+    </div>
+</section>
+
+<!-- Contact Information -->
+<section class="fade-in">
+    <div class="container">
+        <div class="contact-container">
+            <div class="contact-info">
+                <div class="contact-item">
+                    <i class="fas fa-envelope"></i>
+                    <h3 style="color: var(--gold-primary); margin: 1rem 0 0.5rem;">Email</h3>
+                    <a href="mailto:mhirthick07@gmail.com" style="color: var(--white-soft); text-decoration: none;">
+                        mhirthick07@gmail.com
+                    </a>
+                </div>
+
+                <div class="contact-item">
+                    <i class="fab fa-linkedin"></i>
+                    <h3 style="color: var(--gold-primary); margin: 1rem 0 0.5rem;">LinkedIn</h3>
+                    <a href="https://www.linkedin.com/in/hirthick-m" target="_blank"
+                        style="color: var(--white-soft); text-decoration: none;">
+                        linkedin.com/in/hirthick-m
+                    </a>
+                </div>
+
+                <div class="contact-item">
+                    <i class="fab fa-github"></i>
+                    <h3 style="color: var(--gold-primary); margin: 1rem 0 0.5rem;">GitHub</h3>
+                    <a href="https://github.com/hirthick-m" target="_blank"
+                        style="color: var(--white-soft); text-decoration: none;">
+                        github.com/hirthick-m
+                    </a>
+                </div>
+
+                <div class="contact-item">
+                    <i class="fab fa-whatsapp"></i>
+                    <h3 style="color: var(--gold-primary); margin: 1rem 0 0.5rem;">WhatsApp</h3>
+                    <a href="https://wa.me/918838542901" target="_blank"
+                        style="color: var(--white-soft); text-decoration: none;">
+                        +91 88385 42901
+                    </a>
+                </div>
+            </div>
+
+            <!-- Flash Messages -->
+            {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+            <div class="flash-messages">
+                {% for category, message in messages %}
+                <div class="flash {{ category }}">
+                    {% if category == 'success' %}
+                    <i class="fas fa-check-circle"></i>
+                    {% else %}
+                    <i class="fas fa-exclamation-circle"></i>
+                    {% endif %}
+                    {{ message }}
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+            {% endwith %}
+
+
+            <!-- WhatsApp Quick Contact -->
+            <div class="contact-form" style="margin-bottom: 2rem;">
+                <h2
+                    style="font-family: var(--font-serif); font-size: 2.5rem; color: var(--gold-primary); margin-bottom: 1rem; text-align: center;">
+                    <i class="fab fa-whatsapp"></i> Let's Connect on WhatsApp
+                </h2>
+                <p style="text-align: center; margin-bottom: 1.5rem; color: var(--white-soft); font-size: 1.1rem;">
+                    Click the button below to start a conversation with me directly on WhatsApp!
+                </p>
+                <a href="https://wa.me/918838542901?text=Hi%20Hirthick,%20I%20visited%20your%20portfolio%20and%20would%20like%20to%20connect!"
+                    target="_blank" class="btn btn-primary"
+                    style="width: 100%; font-size: 1.2rem; background: linear-gradient(135deg, #25D366, #128C7E); display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
+                    <i class="fab fa-whatsapp" style="font-size: 1.5rem;"></i>
+                    Chat on WhatsApp
+                </a>
+            </div>
+
+
+        </div>
+    </div>
+</section>
+
+<!-- Why Contact Section -->
+<section class="fade-in" style="padding-bottom: 6rem;">
+    <div class="container">
+        <h2 class="section-title">Why Reach Out?</h2>
+        <div
+            style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; max-width: 1200px; margin: 0 auto;">
+            <div class="glass-card" style="text-align: center;">
+                <i class="fas fa-handshake"
+                    style="font-size: 3rem; color: var(--gold-primary); margin-bottom: 1rem;"></i>
+                <h3 style="color: var(--gold-primary); margin-bottom: 1rem;">Collaboration</h3>
+                <p style="line-height: 1.8;">
+                    Looking for a developer to collaborate on an exciting project? Let's combine our skills
+                    and create something remarkable together.
+                </p>
+            </div>
+
+            <div class="glass-card" style="text-align: center;">
+                <i class="fas fa-briefcase"
+                    style="font-size: 3rem; color: var(--gold-primary); margin-bottom: 1rem;"></i>
+                <h3 style="color: var(--gold-primary); margin-bottom: 1rem;">Opportunities</h3>
+                <p style="line-height: 1.8;">
+                    Have an internship, freelance opportunity, or full-time position? I'm always open to
+                    exploring new challenges and growth opportunities.
+                </p>
+            </div>
+
+            <div class="glass-card" style="text-align: center;">
+                <i class="fas fa-comments"
+                    style="font-size: 3rem; color: var(--gold-primary); margin-bottom: 1rem;"></i>
+                <h3 style="color: var(--gold-primary); margin-bottom: 1rem;">Networking</h3>
+                <p style="line-height: 1.8;">
+                    Want to connect with a fellow developer, share ideas, or discuss the latest in web
+                    development and AI? I'd love to hear from you!
+                </p>
+            </div>
+
+            <div class="glass-card" style="text-align: center;">
+                <i class="fas fa-question-circle"
+                    style="font-size: 3rem; color: var(--gold-primary); margin-bottom: 1rem;"></i>
+                <h3 style="color: var(--gold-primary); margin-bottom: 1rem;">Questions</h3>
+                <p style="line-height: 1.8;">
+                    Have questions about my projects, skills, or experience? Feel free to ask! I'm happy
+                    to provide more details and discuss my work.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

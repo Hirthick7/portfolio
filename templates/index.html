@@ -1,0 +1,146 @@
+{% extends "base.html" %}
+
+{% block title %}Home - Hirthick M{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero">
+    <div class="hero-content">
+        <div class="hero-text">
+            <h1>Hirthick M</h1>
+            <p class="subtitle">Engineering Student Building Intelligent Web Systems</p>
+            <p class="intro">
+                I'm a first-year Mechanical and Mechatronics Engineering student with a passion for creating
+                innovative web applications and AI-powered solutions that solve real-world problems.
+            </p>
+            <div class="cta-buttons">
+                <a href="{{ url_for('projects') }}" class="btn btn-primary">View Projects</a>
+                <a href="{{ url_for('contact') }}" class="btn btn-secondary">Contact Me</a>
+            </div>
+        </div>
+
+        <div class="hero-3d">
+            <div class="rotating-gear">
+                <div class="gear-face">💎</div>
+                <div class="gear-face">💻</div>
+                <div class="gear-face">🤖</div>
+                <div class="gear-face">🚀</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Quick About Section -->
+<section id="about-preview" class="fade-in">
+    <div class="container">
+        <h2 class="section-title">About Me</h2>
+        <div class="glass-card" style="max-width: 900px; margin: 0 auto; text-align: center;">
+            <p style="font-size: 1.1rem; line-height: 1.8; margin-bottom: 1.5rem;">
+                I'm currently pursuing B.E in Mechanical and Mechatronics with Additive Manufacturing at
+                SNS Institutions, Coimbatore. While my academic foundation is in engineering, my true passion
+                lies in web development and artificial intelligence.
+            </p>
+            <p style="font-size: 1.1rem; line-height: 1.8; margin-bottom: 1.5rem;">
+                I specialize in building full-stack web applications using modern technologies like Flask,
+                MongoDB, and JavaScript. My focus is on creating intelligent systems that leverage AI to
+                enhance user experiences and solve complex problems.
+            </p>
+            <a href="{{ url_for('about') }}" class="btn btn-primary">Learn More About Me</a>
+        </div>
+    </div>
+</section>
+
+<!-- Skills Preview Section -->
+<section id="skills-preview" class="fade-in">
+    <div class="container">
+        <h2 class="section-title">Core Competencies</h2>
+        <div
+            style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem; margin-top: 3rem;">
+            <div class="glass-card text-center">
+                <i class="fas fa-code" style="font-size: 3rem; color: var(--gold-primary); margin-bottom: 1rem;"></i>
+                <h3 style="color: var(--gold-primary); margin-bottom: 1rem;">Web Development</h3>
+                <p>Full-stack development with HTML, CSS, JavaScript, Flask, and modern frameworks</p>
+            </div>
+
+            <div class="glass-card text-center">
+                <i class="fas fa-database"
+                    style="font-size: 3rem; color: var(--gold-primary); margin-bottom: 1rem;"></i>
+                <h3 style="color: var(--gold-primary); margin-bottom: 1rem;">Database Management</h3>
+                <p>MongoDB expertise for scalable and efficient data storage solutions</p>
+            </div>
+
+            <div class="glass-card text-center">
+                <i class="fas fa-robot" style="font-size: 3rem; color: var(--gold-primary); margin-bottom: 1rem;"></i>
+                <h3 style="color: var(--gold-primary); margin-bottom: 1rem;">AI Integration</h3>
+                <p>Building intelligent systems powered by AI and machine learning</p>
+            </div>
+
+            <div class="glass-card text-center">
+                <i class="fas fa-project-diagram"
+                    style="font-size: 3rem; color: var(--gold-primary); margin-bottom: 1rem;"></i>
+                <h3 style="color: var(--gold-primary); margin-bottom: 1rem;">Workflow Automation</h3>
+                <p>Streamlining processes with n8n and custom automation solutions</p>
+            </div>
+        </div>
+        <div style="text-align: center; margin-top: 3rem;">
+            <a href="{{ url_for('skills') }}" class="btn btn-secondary">View All Skills</a>
+        </div>
+    </div>
+</section>
+
+<!-- Featured Project Section -->
+<section id="featured-project" class="fade-in">
+    <div class="container">
+        <h2 class="section-title">Featured Project</h2>
+        <div class="glass-card" style="max-width: 1000px; margin: 0 auto;">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center;">
+                <div>
+                    <h3
+                        style="font-family: var(--font-serif); font-size: 2.5rem; color: var(--gold-primary); margin-bottom: 1rem;">
+                        MedClinic AI
+                    </h3>
+                    <p style="font-size: 1.1rem; color: var(--gold-light); margin-bottom: 1rem;">
+                        Clinical Support System
+                    </p>
+                    <p style="font-size: 1rem; line-height: 1.8; margin-bottom: 1.5rem;">
+                        An intelligent healthcare platform that leverages artificial intelligence to provide
+                        clinical decision support, symptom analysis, and patient care recommendations.
+                        Built with Flask, MongoDB, and integrated AI models.
+                    </p>
+                    <div style="margin-bottom: 1.5rem;">
+                        <span class="project-tag">Flask</span>
+                        <span class="project-tag">MongoDB</span>
+                        <span class="project-tag">AI/ML</span>
+                        <span class="project-tag">Healthcare</span>
+                    </div>
+                    <a href="{{ url_for('projects') }}" class="btn btn-primary">View Project Details</a>
+                </div>
+                <div style="text-align: center;">
+                    <i class="fas fa-heartbeat" style="font-size: 12rem; color: var(--gold-primary); opacity: 0.3;"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Call to Action Section -->
+<section id="cta" class="fade-in" style="padding: 4rem 5%;">
+    <div class="container">
+        <div class="glass-card" style="text-align: center; padding: 4rem 2rem;">
+            <h2
+                style="font-family: var(--font-serif); font-size: 2.5rem; color: var(--gold-primary); margin-bottom: 1rem;">
+                Let's Build Something Amazing Together
+            </h2>
+            <p style="font-size: 1.2rem; margin-bottom: 2rem; max-width: 700px; margin-left: auto; margin-right: auto;">
+                I'm always excited to collaborate on innovative projects and explore new opportunities.
+                Whether you have a project in mind or just want to connect, I'd love to hear from you!
+            </p>
+            <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                <a href="{{ url_for('contact') }}" class="btn btn-primary">Get In Touch</a>
+                <a href="https://www.linkedin.com/in/hirthick-m" target="_blank" class="btn btn-secondary">Connect on
+                    LinkedIn</a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
