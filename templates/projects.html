@@ -44,10 +44,7 @@
                     </div>
 
                     <div style="margin-bottom: 2rem;">
-                        <a href="#" class="btn btn-primary" style="margin-right: 1rem;">
-                            <i class="fas fa-external-link-alt"></i> Live Demo
-                        </a>
-                        <a href="https://github.com/hirthick-m/medclinic-ai" target="_blank" class="btn btn-secondary">
+                        <a href="https://github.com/Hirthick7/Medclinic_ai" target="_blank" class="btn btn-secondary">
                             <i class="fab fa-github"></i> View Code
                         </a>
                     </div>
@@ -179,6 +176,40 @@
 <!-- Other Projects Section -->
 <section class="fade-in" style="padding-bottom: 6rem;">
     <div class="container">
+        {% if dynamic_projects %}
+        <h2 class="section-title">More Projects</h2>
+        <div class="projects-grid">
+            {% for proj in dynamic_projects %}
+            <div class="project-card">
+                <div style="display:flex; align-items:center; gap:1rem; margin-bottom:1.2rem;">
+                    <i class="fas {{ proj.icon }}" style="font-size:2.2rem; color:var(--gold-primary);"></i>
+                    <h3 style="font-family:var(--font-serif); color:var(--gold-primary); font-size:1.6rem; margin:0;">{{
+                        proj.title }}</h3>
+                </div>
+                <p style="color:var(--gray-light); line-height:1.8; margin-bottom:1.5rem;">{{ proj.description }}</p>
+                <div style="margin-bottom:1.5rem;">
+                    {% for tag in proj.tags %}
+                    <span class="project-tag">{{ tag }}</span>
+                    {% endfor %}
+                </div>
+                <div style="display:flex; gap:0.8rem; flex-wrap:wrap;">
+                    {% if proj.github_url %}
+                    <a href="{{ proj.github_url }}" target="_blank" class="btn btn-secondary"
+                        style="padding:0.7rem 1.4rem; font-size:0.9rem;">
+                        <i class="fab fa-github"></i> View Code
+                    </a>
+                    {% endif %}
+                    {% if proj.live_url %}
+                    <a href="{{ proj.live_url }}" target="_blank" class="btn btn-primary"
+                        style="padding:0.7rem 1.4rem; font-size:0.9rem;">
+                        <i class="fas fa-external-link-alt"></i> Live Demo
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
         <h2 class="section-title">More Projects Coming Soon</h2>
         <div class="glass-card" style="max-width: 800px; margin: 0 auto; text-align: center; padding: 3rem;">
             <i class="fas fa-rocket" style="font-size: 4rem; color: var(--gold-primary); margin-bottom: 1.5rem;"></i>
@@ -196,6 +227,7 @@
                 <a href="{{ url_for('contact') }}" class="btn btn-primary">Get In Touch</a>
             </div>
         </div>
+        {% endif %}
     </div>
 </section>
 {% endblock %}

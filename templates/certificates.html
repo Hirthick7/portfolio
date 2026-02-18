@@ -1,0 +1,256 @@
+{% extends "base.html" %}
+
+{% block title %}Certificates - Hirthick M{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* ── Certificates Page ── */
+    .certs-hero {
+        min-height: 55vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 6rem 1rem 3rem;
+    }
+
+    .certs-hero h1 {
+        font-family: var(--font-serif);
+        font-size: 4rem;
+        color: var(--gold-primary);
+        margin-bottom: 1rem;
+    }
+
+    .certs-hero p {
+        font-size: 1.2rem;
+        color: var(--white-soft);
+        max-width: 700px;
+        margin: 0 auto;
+    }
+
+    /* ── Grid ── */
+    .certs-section {
+        padding: 2rem 1rem 6rem;
+    }
+
+    .certs-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+        gap: 2rem;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    /* ── Certificate Card ── */
+    .cert-card {
+        background: rgba(10, 17, 40, 0.85);
+        border: 1px solid rgba(212, 175, 55, 0.2);
+        border-radius: 16px;
+        padding: 2rem;
+        position: relative;
+        overflow: hidden;
+        transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
+        backdrop-filter: blur(12px);
+    }
+
+    .cert-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: linear-gradient(90deg, #d4af37, #f0d060, #d4af37);
+        background-size: 200% 100%;
+        animation: shimmer 3s linear infinite;
+    }
+
+    @keyframes shimmer {
+        0% {
+            background-position: 200% 0;
+        }
+
+        100% {
+            background-position: -200% 0;
+        }
+    }
+
+    .cert-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4), 0 0 30px rgba(212, 175, 55, 0.1);
+        border-color: rgba(212, 175, 55, 0.5);
+    }
+
+    .cert-icon {
+        width: 56px;
+        height: 56px;
+        background: linear-gradient(135deg, rgba(212, 175, 55, 0.2), rgba(212, 175, 55, 0.05));
+        border: 1px solid rgba(212, 175, 55, 0.3);
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.6rem;
+        color: var(--gold-primary);
+        margin-bottom: 1.2rem;
+    }
+
+    .cert-title {
+        font-family: var(--font-serif);
+        font-size: 1.25rem;
+        color: var(--white-primary);
+        margin-bottom: 0.4rem;
+        line-height: 1.4;
+    }
+
+    .cert-issuer {
+        color: var(--gold-primary);
+        font-size: 0.9rem;
+        font-weight: 600;
+        margin-bottom: 0.8rem;
+        display: flex;
+        align-items: center;
+        gap: 0.4rem;
+    }
+
+    .cert-date {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.4rem;
+        background: rgba(212, 175, 55, 0.1);
+        border: 1px solid rgba(212, 175, 55, 0.2);
+        color: var(--gold-light);
+        font-size: 0.8rem;
+        padding: 0.3rem 0.75rem;
+        border-radius: 20px;
+        margin-bottom: 1rem;
+    }
+
+    .cert-description {
+        color: var(--white-muted);
+        font-size: 0.9rem;
+        line-height: 1.7;
+        margin-bottom: 1.2rem;
+    }
+
+    .cert-verify-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.6rem 1.2rem;
+        background: linear-gradient(135deg, rgba(212, 175, 55, 0.15), rgba(212, 175, 55, 0.05));
+        border: 1px solid rgba(212, 175, 55, 0.4);
+        color: var(--gold-primary);
+        border-radius: 8px;
+        text-decoration: none;
+        font-size: 0.85rem;
+        font-weight: 600;
+        transition: background 0.2s, transform 0.2s;
+    }
+
+    .cert-verify-btn:hover {
+        background: linear-gradient(135deg, rgba(212, 175, 55, 0.3), rgba(212, 175, 55, 0.15));
+        transform: translateX(3px);
+    }
+
+    /* ── Empty State ── */
+    .certs-empty {
+        text-align: center;
+        padding: 5rem 2rem;
+        max-width: 500px;
+        margin: 0 auto;
+    }
+
+    .certs-empty i {
+        font-size: 4rem;
+        color: rgba(212, 175, 55, 0.25);
+        margin-bottom: 1.5rem;
+        display: block;
+    }
+
+    .certs-empty h3 {
+        color: var(--gold-primary);
+        font-size: 1.5rem;
+        margin-bottom: 0.75rem;
+    }
+
+    .certs-empty p {
+        color: var(--white-muted);
+        line-height: 1.7;
+    }
+
+    /* ── Count badge ── */
+    .certs-count {
+        text-align: center;
+        margin-bottom: 2.5rem;
+    }
+
+    .certs-count span {
+        display: inline-block;
+        background: rgba(212, 175, 55, 0.1);
+        border: 1px solid rgba(212, 175, 55, 0.25);
+        color: var(--gold-primary);
+        padding: 0.4rem 1.2rem;
+        border-radius: 20px;
+        font-size: 0.9rem;
+        font-weight: 600;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<!-- Hero -->
+<section class="certs-hero">
+    <div>
+        <h1>🏆 Certificates</h1>
+        <p>A collection of professional certifications and achievements that validate my skills and continuous learning
+            journey.</p>
+    </div>
+</section>
+
+<!-- Certificates Grid -->
+<section class="certs-section fade-in">
+    {% if certificates %}
+    <div class="certs-count">
+        <span><i class="fas fa-certificate"></i> {{ certificates|length }} Certificate{{ 's' if certificates|length != 1
+            else '' }}</span>
+    </div>
+    <div class="certs-grid">
+        {% for cert in certificates %}
+        <div class="cert-card">
+            <div class="cert-icon">
+                <i class="fas fa-award"></i>
+            </div>
+            <h3 class="cert-title">{{ cert.title }}</h3>
+            <div class="cert-issuer">
+                <i class="fas fa-building"></i> {{ cert.issuer }}
+            </div>
+            {% if cert.issue_date %}
+            <div>
+                <span class="cert-date">
+                    <i class="fas fa-calendar-alt"></i> {{ cert.issue_date }}
+                </span>
+            </div>
+            {% endif %}
+            {% if cert.description %}
+            <p class="cert-description">{{ cert.description }}</p>
+            {% endif %}
+            {% if cert.credential_url %}
+            <a href="{{ cert.credential_url }}" target="_blank" class="cert-verify-btn">
+                <i class="fas fa-external-link-alt"></i> Verify Credential
+            </a>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="certs-empty">
+        <i class="fas fa-certificate"></i>
+        <h3>Coming Soon</h3>
+        <p>Certificates will be displayed here once they are added through the admin panel.</p>
+    </div>
+    {% endif %}
+</section>
+
+{% endblock %}

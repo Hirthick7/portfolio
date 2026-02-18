@@ -825,6 +825,7 @@ section {
     background: linear-gradient(135deg, rgba(212, 175, 55, 0.1), transparent);
     opacity: 0;
     transition: opacity var(--transition-medium);
+    pointer-events: none;
 }
 
 .project-card:hover::before {

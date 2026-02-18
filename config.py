@@ -13,7 +13,7 @@ class Config:
     # For local MongoDB: 'mongodb://localhost:27017/'
     # For MongoDB Atlas: 'mongodb+srv://username:password@cluster.mongodb.net/'
     MONGO_URI = os.environ.get('MONGO_URI') or 'mongodb://localhost:27017/'
-    MONGO_DB_NAME = os.environ.get('MONGO_DB_NAME') or 'portfolio_db'
+    MONGO_DB_NAME = os.environ.get('MONGO_DB_NAME') or 'portfolio'
     
     # Application settings
     DEBUG = os.environ.get('FLASK_DEBUG', 'True') == 'True'
@@ -26,3 +26,6 @@ class Config:
     MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD')
     MAIL_DEFAULT_SENDER = os.environ.get('MAIL_DEFAULT_SENDER') or os.environ.get('MAIL_USERNAME')
     RECIPIENT_EMAIL = os.environ.get('RECIPIENT_EMAIL') or 'mhirthick07@gmail.com'
+
+    # Admin panel
+    ADMIN_PASSWORD = os.environ.get('ADMIN_PASSWORD') or 'bapcx5j97s'

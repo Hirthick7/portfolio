@@ -1,5 +1,6 @@
 from pymongo import MongoClient
 from datetime import datetime
+from bson import ObjectId
 from config import Config
 
 class Database:
@@ -12,7 +13,7 @@ class Database:
     def get_db(cls):
         """Get database instance (singleton pattern)"""
         if cls._db is None:
-            cls._client = MongoClient(Config.MONGO_URI)
+            cls._client = MongoClient(Config.MONGO_URI, serverSelectionTimeoutMS=3000)
             cls._db = cls._client[Config.MONGO_DB_NAME]
         return cls._db
     
@@ -32,20 +33,8 @@ class ContactMessage:
     
     @staticmethod
     def create(name, email, message):
-        """
-        Create a new contact message
-        
-        Args:
-            name (str): Sender's name
-            email (str): Sender's email
-            message (str): Message content
-            
-        Returns:
-            dict: Inserted document with _id
-        """
         db = Database.get_db()
         collection = db[ContactMessage.collection_name]
-        
         document = {
             'name': name,
             'email': email,
@@ -53,10 +42,8 @@ class ContactMessage:
             'created_at': datetime.utcnow(),
             'read': False
         }
-        
         result = collection.insert_one(document)
         document['_id'] = result.inserted_id
-        
         return document
     
     @staticmethod
@@ -75,3 +62,129 @@ class ContactMessage:
             {'_id': message_id},
             {'$set': {'read': True}}
         )
+
+
+class Skill:
+    """Dynamic skill model for admin-managed skills"""
+    
+    collection_name = 'skills'
+    
+    @staticmethod
+    def create(name, category, proficiency):
+        """
+        Create a new skill entry.
+        
+        Args:
+            name (str): Skill name (e.g. 'React')
+            category (str): Category label (e.g. 'Web Development')
+            proficiency (int): Proficiency percentage 0-100
+        """
+        db = Database.get_db()
+        collection = db[Skill.collection_name]
+        document = {
+            'name': name,
+            'category': category,
+            'proficiency': int(proficiency),
+            'created_at': datetime.utcnow()
+        }
+        result = collection.insert_one(document)
+        document['_id'] = result.inserted_id
+        return document
+    
+    @staticmethod
+    def get_all():
+        """Get all skills sorted by category then name"""
+        db = Database.get_db()
+        collection = db[Skill.collection_name]
+        return list(collection.find().sort([('category', 1), ('name', 1)]))
+    
+    @staticmethod
+    def delete(skill_id):
+        """Delete a skill by its ObjectId string"""
+        db = Database.get_db()
+        collection = db[Skill.collection_name]
+        collection.delete_one({'_id': ObjectId(skill_id)})
+
+
+class Certificate:
+    """Certificate model for admin-managed certificates"""
+    
+    collection_name = 'certificates'
+    
+    @staticmethod
+    def create(title, issuer, issue_date, credential_url, description):
+        """
+        Create a new certificate entry.
+        
+        Args:
+            title (str): Certificate title
+            issuer (str): Issuing organisation
+            issue_date (str): Date string (e.g. 'Jan 2025')
+            credential_url (str): URL to verify the credential (optional)
+            description (str): Short description (optional)
+        """
+        db = Database.get_db()
+        collection = db[Certificate.collection_name]
+        document = {
+            'title': title,
+            'issuer': issuer,
+            'issue_date': issue_date,
+            'credential_url': credential_url,
+            'description': description,
+            'created_at': datetime.utcnow()
+        }
+        result = collection.insert_one(document)
+        document['_id'] = result.inserted_id
+        return document
+    
+    @staticmethod
+    def get_all():
+        """Get all certificates sorted newest first"""
+        db = Database.get_db()
+        collection = db[Certificate.collection_name]
+        return list(collection.find().sort('created_at', -1))
+    
+    @staticmethod
+    def delete(cert_id):
+        """Delete a certificate by its ObjectId string"""
+        db = Database.get_db()
+        collection = db[Certificate.collection_name]
+        collection.delete_one({'_id': ObjectId(cert_id)})
+
+
+class Project:
+    """Project model for admin-managed projects"""
+
+    collection_name = 'projects'
+
+    @staticmethod
+    def create(title, description, tags, github_url, live_url, icon):
+        db = Database.get_db()
+        collection = db[Project.collection_name]
+        document = {
+            'title': title,
+            'description': description,
+            'tags': [t.strip() for t in tags.split(',') if t.strip()],
+            'github_url': github_url,
+            'live_url': live_url,
+            'icon': icon or 'fa-code',
+            'created_at': datetime.utcnow()
+        }
+        result = collection.insert_one(document)
+        document['_id'] = result.inserted_id
+        return document
+
+    @staticmethod
+    def get_all():
+        """Get all projects sorted newest first"""
+        db = Database.get_db()
+        collection = db[Project.collection_name]
+        return list(collection.find().sort('created_at', -1))
+
+    @staticmethod
+    def delete(project_id):
+        """Delete a project by its ObjectId string"""
+        db = Database.get_db()
+        collection = db[Project.collection_name]
+        collection.delete_one({'_id': ObjectId(project_id)})
+

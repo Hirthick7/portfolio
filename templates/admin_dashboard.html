@@ -1,0 +1,849 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Dashboard - Hirthick M{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* ── Admin Layout ── */
+    .admin-wrapper {
+        min-height: 100vh;
+        padding: 6rem 1.5rem 4rem;
+        /* 6rem top clears the fixed navbar */
+        position: relative;
+        z-index: 2;
+        /* sit above floating-shapes (z-index: 0) */
+        background: rgba(10, 17, 40, 0.6);
+        /* block shapes from bleeding through */
+    }
+
+    .admin-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        max-width: 1200px;
+        margin: 0 auto 2.5rem;
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+
+    .admin-header h1 {
+        font-family: var(--font-serif);
+        color: var(--gold-primary);
+        font-size: 2.2rem;
+        margin: 0;
+    }
+
+    .admin-header h1 span {
+        font-size: 1rem;
+        color: var(--white-muted);
+        font-family: var(--font-sans);
+        font-weight: 400;
+        display: block;
+        margin-top: 0.2rem;
+    }
+
+    .admin-logout-btn {
+        padding: 0.6rem 1.4rem;
+        background: rgba(220, 53, 69, 0.15);
+        border: 1px solid rgba(220, 53, 69, 0.4);
+        color: #ff6b7a;
+        border-radius: 8px;
+        text-decoration: none;
+        font-size: 0.9rem;
+        font-weight: 600;
+        transition: background 0.2s;
+    }
+
+    .admin-logout-btn:hover {
+        background: rgba(220, 53, 69, 0.3);
+    }
+
+    /* ── Stats Bar ── */
+    .admin-stats {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 1.2rem;
+        max-width: 1200px;
+        margin: 0 auto 2.5rem;
+    }
+
+    .stat-card {
+        background: rgba(10, 17, 40, 0.8);
+        border: 1px solid rgba(212, 175, 55, 0.2);
+        border-radius: 12px;
+        padding: 1.5rem;
+        text-align: center;
+        backdrop-filter: blur(10px);
+    }
+
+    .stat-card .stat-num {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: var(--gold-primary);
+        line-height: 1;
+    }
+
+    .stat-card .stat-label {
+        color: var(--white-muted);
+        font-size: 0.85rem;
+        margin-top: 0.4rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+    }
+
+    /* ── Tab Navigation ── */
+    .admin-tabs {
+        display: flex;
+        gap: 0.5rem;
+        max-width: 1200px;
+        margin: 0 auto 2rem;
+        border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+        padding-bottom: 0;
+        flex-wrap: wrap;
+    }
+
+    .admin-tab-btn {
+        padding: 0.75rem 1.5rem;
+        background: transparent;
+        border: none;
+        border-bottom: 3px solid transparent;
+        color: var(--white-muted);
+        font-size: 0.95rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: color 0.2s, border-color 0.2s;
+        margin-bottom: -1px;
+    }
+
+    .admin-tab-btn.active,
+    .admin-tab-btn:hover {
+        color: var(--gold-primary);
+        border-bottom-color: var(--gold-primary);
+    }
+
+    /* ── Tab Panels ── */
+    .admin-panel {
+        display: none;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .admin-panel.active {
+        display: block;
+    }
+
+    /* ── Section Cards ── */
+    .admin-section {
+        background: rgba(10, 17, 40, 0.8);
+        border: 1px solid rgba(212, 175, 55, 0.2);
+        border-radius: 16px;
+        padding: 2rem;
+        margin-bottom: 2rem;
+        backdrop-filter: blur(10px);
+    }
+
+    .admin-section h2 {
+        color: var(--gold-primary);
+        font-size: 1.3rem;
+        margin: 0 0 1.5rem;
+        padding-bottom: 0.75rem;
+        border-bottom: 1px solid rgba(212, 175, 55, 0.15);
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+    }
+
+    /* ── Forms ── */
+    .admin-form {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1rem;
+        align-items: end;
+    }
+
+    .admin-form.single-col {
+        grid-template-columns: 1fr;
+    }
+
+    .form-group {
+        display: flex;
+        flex-direction: column;
+        gap: 0.4rem;
+    }
+
+    .form-group label {
+        color: var(--gold-light);
+        font-size: 0.8rem;
+        font-weight: 600;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+        padding: 0.7rem 0.9rem;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(212, 175, 55, 0.25);
+        border-radius: 8px;
+        color: #ffffff;
+        font-size: 0.95rem;
+        transition: border-color 0.3s;
+        font-family: inherit;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+        outline: none;
+        background: rgba(255, 255, 255, 0.08);
+        border-color: var(--gold-primary);
+        box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.12);
+        color: #ffffff;
+    }
+
+    /* Prevent browser autofill from overriding dark background */
+    .form-group input:-webkit-autofill,
+    .form-group input:-webkit-autofill:hover,
+    .form-group input:-webkit-autofill:focus {
+        -webkit-text-fill-color: #ffffff;
+        -webkit-box-shadow: 0 0 0px 1000px #1a2240 inset;
+        transition: background-color 5000s ease-in-out 0s;
+    }
+
+    .form-group select option {
+        background: #0a1128;
+    }
+
+    .form-group textarea {
+        resize: vertical;
+        min-height: 80px;
+    }
+
+    .btn-add {
+        padding: 0.75rem 1.5rem;
+        background: linear-gradient(135deg, #d4af37, #f0d060);
+        color: #0a1128;
+        border: none;
+        border-radius: 8px;
+        font-size: 0.95rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition: transform 0.2s, box-shadow 0.2s;
+        white-space: nowrap;
+        align-self: flex-end;
+    }
+
+    .btn-add:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(212, 175, 55, 0.35);
+    }
+
+    /* ── Tables ── */
+    .admin-table-wrap {
+        overflow-x: auto;
+        margin-top: 1.5rem;
+    }
+
+    .admin-table {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 0.9rem;
+    }
+
+    .admin-table th {
+        background: rgba(212, 175, 55, 0.1);
+        color: var(--gold-primary);
+        padding: 0.75rem 1rem;
+        text-align: left;
+        font-size: 0.8rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        white-space: nowrap;
+    }
+
+    .admin-table td {
+        padding: 0.85rem 1rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        color: var(--white-soft);
+        vertical-align: middle;
+    }
+
+    .admin-table tr:last-child td {
+        border-bottom: none;
+    }
+
+    .admin-table tr:hover td {
+        background: rgba(212, 175, 55, 0.04);
+    }
+
+    .badge {
+        display: inline-block;
+        padding: 0.25rem 0.7rem;
+        border-radius: 20px;
+        font-size: 0.78rem;
+        font-weight: 600;
+        background: rgba(212, 175, 55, 0.15);
+        color: var(--gold-primary);
+        border: 1px solid rgba(212, 175, 55, 0.3);
+    }
+
+    .progress-mini {
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+    }
+
+    .progress-mini-bar {
+        flex: 1;
+        height: 6px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 3px;
+        overflow: hidden;
+        min-width: 80px;
+    }
+
+    .progress-mini-fill {
+        height: 100%;
+        background: linear-gradient(90deg, #d4af37, #f0d060);
+        border-radius: 3px;
+    }
+
+    .btn-delete {
+        padding: 0.35rem 0.8rem;
+        background: rgba(220, 53, 69, 0.12);
+        border: 1px solid rgba(220, 53, 69, 0.35);
+        color: #ff6b7a;
+        border-radius: 6px;
+        font-size: 0.82rem;
+        cursor: pointer;
+        transition: background 0.2s;
+    }
+
+    .btn-delete:hover {
+        background: rgba(220, 53, 69, 0.28);
+    }
+
+    .empty-state {
+        text-align: center;
+        padding: 2.5rem;
+        color: var(--white-muted);
+    }
+
+    .empty-state i {
+        font-size: 2.5rem;
+        color: rgba(212, 175, 55, 0.3);
+        margin-bottom: 0.75rem;
+        display: block;
+    }
+
+    /* ── Messages ── */
+    .message-card {
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.07);
+        border-radius: 10px;
+        padding: 1.2rem 1.4rem;
+        margin-bottom: 1rem;
+    }
+
+    .message-card:last-child {
+        margin-bottom: 0;
+    }
+
+    .message-meta {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 0.6rem;
+        flex-wrap: wrap;
+        gap: 0.4rem;
+    }
+
+    .message-sender {
+        font-weight: 600;
+        color: var(--gold-primary);
+    }
+
+    .message-email {
+        color: var(--white-muted);
+        font-size: 0.85rem;
+    }
+
+    .message-date {
+        color: var(--white-muted);
+        font-size: 0.8rem;
+    }
+
+    .message-body {
+        color: var(--white-soft);
+        line-height: 1.7;
+        font-size: 0.92rem;
+        white-space: pre-wrap;
+    }
+
+    .unread-dot {
+        display: inline-block;
+        width: 8px;
+        height: 8px;
+        background: var(--gold-primary);
+        border-radius: 50%;
+        margin-right: 0.4rem;
+    }
+
+    /* ── Flash ── */
+    .admin-flash {
+        max-width: 1200px;
+        margin: 0 auto 1.5rem;
+    }
+
+    .flash-msg {
+        padding: 0.75rem 1.2rem;
+        border-radius: 8px;
+        font-size: 0.9rem;
+        margin-bottom: 0.5rem;
+    }
+
+    .flash-msg.error {
+        background: rgba(220, 53, 69, 0.15);
+        border: 1px solid rgba(220, 53, 69, 0.4);
+        color: #ff6b7a;
+    }
+
+    .flash-msg.success {
+        background: rgba(40, 167, 69, 0.15);
+        border: 1px solid rgba(40, 167, 69, 0.4);
+        color: #5cb85c;
+    }
+
+    .cert-url-link {
+        color: var(--gold-primary);
+        text-decoration: none;
+        font-size: 0.85rem;
+    }
+
+    .cert-url-link:hover {
+        text-decoration: underline;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="admin-wrapper">
+
+    <!-- Header -->
+    <div class="admin-header">
+        <h1>
+            <i class="fas fa-tachometer-alt" style="font-size:1.6rem;"></i> Admin Dashboard
+            <span>Hirthick M — Portfolio Manager</span>
+        </h1>
+        <a href="{{ url_for('admin_logout') }}" class="admin-logout-btn">
+            <i class="fas fa-sign-out-alt"></i> Logout
+        </a>
+    </div>
+
+    <!-- Flash Messages -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    <div class="admin-flash">
+        {% for category, message in messages %}
+        <div class="flash-msg {{ category }}">{{ message }}</div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    {% endwith %}
+
+    <!-- Stats -->
+    <div class="admin-stats">
+        <div class="stat-card">
+            <div class="stat-num">{{ skills|length }}</div>
+            <div class="stat-label"><i class="fas fa-code"></i> Extra Skills</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-num">{{ certificates|length }}</div>
+            <div class="stat-label"><i class="fas fa-certificate"></i> Certificates</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-num">{{ projects|length }}</div>
+            <div class="stat-label"><i class="fas fa-folder-open"></i> Projects</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-num">{{ messages|length }}</div>
+            <div class="stat-label"><i class="fas fa-envelope"></i> Messages</div>
+        </div>
+    </div>
+
+    <!-- Tab Navigation -->
+    <div class="admin-tabs">
+        <button class="admin-tab-btn active" onclick="showTab('skills', this)">
+            <i class="fas fa-code"></i> Skills
+        </button>
+        <button class="admin-tab-btn" onclick="showTab('certificates', this)">
+            <i class="fas fa-certificate"></i> Certificates
+        </button>
+        <button class="admin-tab-btn" onclick="showTab('projects', this)">
+            <i class="fas fa-folder-open"></i> Projects
+            {% if projects|length > 0 %}
+            <span
+                style="background:var(--gold-primary);color:#0a1128;border-radius:10px;padding:0.1rem 0.45rem;font-size:0.75rem;margin-left:0.3rem;">{{
+                projects|length }}</span>
+            {% endif %}
+        </button>
+        <button class="admin-tab-btn" onclick="showTab('messages', this)">
+            <i class="fas fa-envelope"></i> Messages
+            {% if messages|length > 0 %}
+            <span
+                style="background:var(--gold-primary);color:#0a1128;border-radius:10px;padding:0.1rem 0.45rem;font-size:0.75rem;margin-left:0.3rem;">{{
+                messages|length }}</span>
+            {% endif %}
+        </button>
+    </div>
+
+    <!-- ── SKILLS PANEL ── -->
+    <div id="panel-skills" class="admin-panel active">
+        <!-- Add Skill Form -->
+        <div class="admin-section">
+            <h2><i class="fas fa-plus-circle"></i> Add New Skill</h2>
+            <form method="POST" action="{{ url_for('admin_add_skill') }}">
+                <div class="admin-form">
+                    <div class="form-group">
+                        <label>Skill Name *</label>
+                        <input type="text" name="name" placeholder="e.g. React, Docker, TypeScript" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Category *</label>
+                        <select name="category" required>
+                            <option value="" disabled selected>Select category</option>
+                            <option value="Web Development">Web Development</option>
+                            <option value="Backend Development">Backend Development</option>
+                            <option value="Database Management">Database Management</option>
+                            <option value="AI & Automation">AI & Automation</option>
+                            <option value="UI/UX Design">UI/UX Design</option>
+                            <option value="Tools & Technologies">Tools & Technologies</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Proficiency (0–100)</label>
+                        <input type="number" name="proficiency" min="0" max="100" value="75" placeholder="75">
+                    </div>
+                    <button type="submit" class="btn-add">
+                        <i class="fas fa-plus"></i> Add Skill
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Skills Table -->
+        <div class="admin-section">
+            <h2><i class="fas fa-list"></i> Current Extra Skills ({{ skills|length }})</h2>
+            {% if skills %}
+            <div class="admin-table-wrap">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>Skill Name</th>
+                            <th>Category</th>
+                            <th>Proficiency</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for skill in skills %}
+                        <tr>
+                            <td><strong>{{ skill.name }}</strong></td>
+                            <td><span class="badge">{{ skill.category }}</span></td>
+                            <td>
+                                <div class="progress-mini">
+                                    <div class="progress-mini-bar">
+                                        <div class="progress-mini-fill" data-width="{{ skill.proficiency }}"></div>
+                                    </div>
+                                    <span style="color:var(--gold-primary);font-weight:600;min-width:35px;">{{
+                                        skill.proficiency }}%</span>
+                                </div>
+                            </td>
+                            <td>
+                                <form method="POST"
+                                    action="{{ url_for('admin_delete_skill', skill_id=skill._id|string) }}"
+                                    style="display:inline;" onsubmit="return confirm('Delete skill {{ skill.name }}?')">
+                                    <button type="submit" class="btn-delete">
+                                        <i class="fas fa-trash"></i> Delete
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="empty-state">
+                <i class="fas fa-code"></i>
+                <p>No extra skills added yet. Use the form above to add your first skill!</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- ── CERTIFICATES PANEL ── -->
+    <div id="panel-certificates" class="admin-panel">
+        <!-- Add Certificate Form -->
+        <div class="admin-section">
+            <h2><i class="fas fa-plus-circle"></i> Add New Certificate</h2>
+            <form method="POST" action="{{ url_for('admin_add_certificate') }}">
+                <div class="admin-form">
+                    <div class="form-group">
+                        <label>Certificate Title *</label>
+                        <input type="text" name="title" placeholder="e.g. AWS Certified Developer" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Issuing Organisation *</label>
+                        <input type="text" name="issuer" placeholder="e.g. Amazon Web Services" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Issue Date</label>
+                        <input type="text" name="issue_date" placeholder="e.g. Jan 2025">
+                    </div>
+                    <div class="form-group">
+                        <label>Credential URL</label>
+                        <input type="text" name="credential_url" placeholder="https://... (optional)">
+                    </div>
+                </div>
+                <div class="admin-form single-col" style="margin-top:1rem;">
+                    <div class="form-group">
+                        <label>Description (optional)</label>
+                        <textarea name="description"
+                            placeholder="Brief description of what this certificate covers..."></textarea>
+                    </div>
+                    <button type="submit" class="btn-add" style="max-width:200px;">
+                        <i class="fas fa-plus"></i> Add Certificate
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Certificates Table -->
+        <div class="admin-section">
+            <h2><i class="fas fa-list"></i> Current Certificates ({{ certificates|length }})</h2>
+            {% if certificates %}
+            <div class="admin-table-wrap">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Issuer</th>
+                            <th>Date</th>
+                            <th>Credential</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for cert in certificates %}
+                        <tr>
+                            <td><strong>{{ cert.title }}</strong>
+                                {% if cert.description %}
+                                <br><small style="color:var(--white-muted);">{{ cert.description[:60] }}{% if
+                                    cert.description|length > 60 %}…{% endif %}</small>
+                                {% endif %}
+                            </td>
+                            <td>{{ cert.issuer }}</td>
+                            <td>{{ cert.issue_date or '—' }}</td>
+                            <td>
+                                {% if cert.credential_url %}
+                                <a href="{{ cert.credential_url }}" target="_blank" class="cert-url-link">
+                                    <i class="fas fa-external-link-alt"></i> View
+                                </a>
+                                {% else %}
+                                <span style="color:var(--white-muted);">—</span>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <form method="POST"
+                                    action="{{ url_for('admin_delete_certificate', cert_id=cert._id|string) }}"
+                                    style="display:inline;"
+                                    onsubmit="return confirm('Delete certificate {{ cert.title }}?')">
+                                    <button type="submit" class="btn-delete">
+                                        <i class="fas fa-trash"></i> Delete
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="empty-state">
+                <i class="fas fa-certificate"></i>
+                <p>No certificates added yet. Use the form above to add your first certificate!</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- ── PROJECTS PANEL ── -->
+    <div id="panel-projects" class="admin-panel">
+        <!-- Add Project Form -->
+        <div class="admin-section">
+            <h2><i class="fas fa-plus-circle"></i> Add New Project</h2>
+            <form method="POST" action="{{ url_for('admin_add_project') }}">
+                <div class="admin-form">
+                    <div class="form-group">
+                        <label>Project Title *</label>
+                        <input type="text" name="title" placeholder="e.g. MedClinic AI" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Icon (Font Awesome class)</label>
+                        <input type="text" name="icon" placeholder="e.g. fa-heartbeat" value="fa-code">
+                    </div>
+                    <div class="form-group">
+                        <label>GitHub URL</label>
+                        <input type="text" name="github_url" placeholder="https://github.com/...">
+                    </div>
+                    <div class="form-group">
+                        <label>Live Demo URL (optional)</label>
+                        <input type="text" name="live_url" placeholder="https://...">
+                    </div>
+                </div>
+                <div class="admin-form single-col" style="margin-top:1rem;">
+                    <div class="form-group">
+                        <label>Tags (comma-separated) *</label>
+                        <input type="text" name="tags" placeholder="e.g. Flask, Python, MongoDB, AI/ML" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Description *</label>
+                        <textarea name="description" placeholder="Brief description of the project..."
+                            required></textarea>
+                    </div>
+                    <button type="submit" class="btn-add" style="max-width:200px;">
+                        <i class="fas fa-plus"></i> Add Project
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Projects Table -->
+        <div class="admin-section">
+            <h2><i class="fas fa-list"></i> Current Projects ({{ projects|length }})</h2>
+            {% if projects %}
+            <div class="admin-table-wrap">
+                <table class="admin-table">
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Tags</th>
+                            <th>GitHub</th>
+                            <th>Live</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for proj in projects %}
+                        <tr>
+                            <td>
+                                <i class="fas {{ proj.icon }}"
+                                    style="color:var(--gold-primary);margin-right:0.4rem;"></i>
+                                <strong>{{ proj.title }}</strong>
+                                {% if proj.description %}
+                                <br><small style="color:var(--white-muted);">{{ proj.description[:60] }}{% if
+                                    proj.description|length > 60 %}…{% endif %}</small>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% for tag in proj.tags %}
+                                <span class="badge" style="margin-bottom:2px;">{{ tag }}</span>
+                                {% endfor %}
+                            </td>
+                            <td>
+                                {% if proj.github_url %}
+                                <a href="{{ proj.github_url }}" target="_blank" class="cert-url-link"><i
+                                        class="fab fa-github"></i> View</a>
+                                {% else %}<span style="color:var(--white-muted);">—</span>{% endif %}
+                            </td>
+                            <td>
+                                {% if proj.live_url %}
+                                <a href="{{ proj.live_url }}" target="_blank" class="cert-url-link"><i
+                                        class="fas fa-external-link-alt"></i> Demo</a>
+                                {% else %}<span style="color:var(--white-muted);">—</span>{% endif %}
+                            </td>
+                            <td>
+                                <form method="POST"
+                                    action="{{ url_for('admin_delete_project', project_id=proj._id|string) }}"
+                                    style="display:inline;"
+                                    onsubmit="return confirm('Delete project {{ proj.title }}?')">
+                                    <button type="submit" class="btn-delete">
+                                        <i class="fas fa-trash"></i> Delete
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="empty-state">
+                <i class="fas fa-folder-open"></i>
+                <p>No projects added yet. Use the form above to add your first project!</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- ── MESSAGES PANEL ── -->
+    <div id="panel-messages" class="admin-panel">
+        <div class="admin-section">
+            <h2><i class="fas fa-inbox"></i> Contact Messages ({{ messages|length }})</h2>
+            {% if messages %}
+            {% for msg in messages %}
+            <div class="message-card">
+                <div class="message-meta">
+                    <div>
+                        {% if not msg.read %}<span class="unread-dot"></span>{% endif %}
+                        <span class="message-sender">{{ msg.name }}</span>
+                        <span class="message-email"> — {{ msg.email }}</span>
+                    </div>
+                    <span class="message-date">
+                        {{ msg.created_at.strftime('%d %b %Y, %H:%M') if msg.created_at else '' }}
+                    </span>
+                </div>
+                <div class="message-body">{{ msg.message }}</div>
+            </div>
+            {% endfor %}
+            {% else %}
+            <div class="empty-state">
+                <i class="fas fa-inbox"></i>
+                <p>No messages yet. They'll appear here when someone fills out your contact form.</p>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Apply progress bar widths from data attributes
+    document.querySelectorAll('.progress-mini-fill[data-width]').forEach(el => {
+        el.style.width = el.dataset.width + '%';
+    });
+
+    function showTab(tab, btn) {
+        // Hide all panels
+        document.querySelectorAll('.admin-panel').forEach(p => p.classList.remove('active'));
+        document.querySelectorAll('.admin-tab-btn').forEach(b => b.classList.remove('active'));
+        // Show selected
+        document.getElementById('panel-' + tab).classList.add('active');
+        btn.classList.add('active');
+    }
+
+    // Auto-open tab based on URL hash
+    window.addEventListener('DOMContentLoaded', () => {
+        const hash = window.location.hash.replace('#', '');
+        const tabs = { skills: 0, certificates: 1, projects: 2, messages: 3 };
+        if (hash && tabs[hash] !== undefined) {
+            showTab(hash, document.querySelectorAll('.admin-tab-btn')[tabs[hash]]);
+        }
+    });
+</script>
+{% endblock %}
