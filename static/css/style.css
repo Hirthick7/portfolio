@@ -403,7 +403,9 @@ body {
     transform: translateY(-3px);
 }
 
-/* Floating Orb with Particles */
+/* ========================================
+   TECH ORBIT ANIMATION (Hero Section)
+   ======================================== */
 .hero-3d {
     display: flex;
     align-items: center;
@@ -411,121 +413,197 @@ body {
     position: relative;
 }
 
-.rotating-gear {
-    width: 400px;
-    height: 400px;
+.tech-orbit-wrapper {
+    width: 420px;
+    height: 420px;
     position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
-/* Central Orb */
-.gear-face:nth-child(1) {
+/* Central glowing core */
+.tech-core {
     position: absolute;
-    width: 200px;
-    height: 200px;
-    background: radial-gradient(circle at 30% 30%, var(--gold-light), var(--gold-primary));
+    width: 130px;
+    height: 130px;
+    background: radial-gradient(circle at 35% 35%, rgba(244, 208, 63, 0.25), rgba(212, 175, 55, 0.08));
     border-radius: 50%;
+    border: 2px solid rgba(212, 175, 55, 0.5);
     box-shadow:
-        0 0 60px rgba(212, 175, 55, 0.6),
-        0 0 100px rgba(212, 175, 55, 0.4),
-        inset 0 0 40px rgba(255, 255, 255, 0.2);
-    animation: floatOrb 6s ease-in-out infinite, pulse 3s ease-in-out infinite;
+        0 0 40px rgba(212, 175, 55, 0.4),
+        0 0 80px rgba(212, 175, 55, 0.2),
+        inset 0 0 30px rgba(212, 175, 55, 0.1);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 4rem;
-    color: var(--navy-dark);
+    animation: corePulse 4s ease-in-out infinite;
+    z-index: 5;
 }
 
-/* Orbiting Particles */
-.gear-face:nth-child(2),
-.gear-face:nth-child(3),
-.gear-face:nth-child(4) {
-    position: absolute;
-    width: 60px;
-    height: 60px;
-    background: linear-gradient(135deg, rgba(212, 175, 55, 0.8), rgba(244, 208, 63, 0.6));
-    border-radius: 50%;
-    box-shadow: 0 0 30px rgba(212, 175, 55, 0.8);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 2rem;
-}
-
-.gear-face:nth-child(2) {
-    animation: orbit1 8s linear infinite;
-}
-
-.gear-face:nth-child(3) {
-    animation: orbit2 10s linear infinite;
-}
-
-.gear-face:nth-child(4) {
-    animation: orbit3 12s linear infinite;
-}
-
-@keyframes floatOrb {
+@keyframes corePulse {
 
     0%,
     100% {
-        transform: translateY(0px);
-    }
-
-    50% {
-        transform: translateY(-20px);
-    }
-}
-
-@keyframes pulse {
-
-    0%,
-    100% {
+        box-shadow: 0 0 40px rgba(212, 175, 55, 0.4), 0 0 80px rgba(212, 175, 55, 0.2);
         transform: scale(1);
-        box-shadow:
-            0 0 60px rgba(212, 175, 55, 0.6),
-            0 0 100px rgba(212, 175, 55, 0.4),
-            inset 0 0 40px rgba(255, 255, 255, 0.2);
     }
 
     50% {
-        transform: scale(1.05);
-        box-shadow:
-            0 0 80px rgba(212, 175, 55, 0.8),
-            0 0 120px rgba(212, 175, 55, 0.6),
-            inset 0 0 50px rgba(255, 255, 255, 0.3);
+        box-shadow: 0 0 60px rgba(212, 175, 55, 0.7), 0 0 110px rgba(212, 175, 55, 0.35);
+        transform: scale(1.06);
     }
 }
 
-@keyframes orbit1 {
-    0% {
-        transform: rotate(0deg) translateX(150px) rotate(0deg);
+/* Orbit rings — each ring rotates, the icon counter-rotates to stay upright */
+.orbit-ring {
+    position: absolute;
+    border-radius: 50%;
+    border: 1px dashed rgba(212, 175, 55, 0.2);
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.orbit-icon {
+    position: absolute;
+    top: -29px;
+    width: 58px;
+    height: 58px;
+    background: rgba(10, 17, 40, 0.85);
+    border: 2px solid rgba(212, 175, 55, 0.45);
+    border-radius: 50%;
+    padding: 7px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4), 0 0 16px rgba(212, 175, 55, 0.25);
+    transition: box-shadow 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.orbit-icon:hover {
+    box-shadow: 0 4px 25px rgba(212, 175, 55, 0.6), 0 0 30px rgba(212, 175, 55, 0.3);
+}
+
+/* Single orbit ring — rotates as one unit, icons fixed 90° apart */
+.single-ring {
+    position: absolute;
+    width: 360px;
+    height: 360px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    animation: singleRingRotate 14s linear infinite;
+}
+
+/* Icons inside single-ring: positioned via inline style transforms in HTML.
+   They counter-rotate to stay upright. */
+.single-ring .orbit-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: -29px;
+    margin-left: -29px;
+    animation: iconStayUpright 14s linear infinite;
+}
+
+@keyframes singleRingRotate {
+    from {
+        transform: translate(-50%, -50%) rotate(0deg);
     }
 
-    100% {
-        transform: rotate(360deg) translateX(150px) rotate(-360deg);
+    to {
+        transform: translate(-50%, -50%) rotate(360deg);
     }
 }
 
-@keyframes orbit2 {
-    0% {
-        transform: rotate(120deg) translateX(180px) rotate(-120deg);
+@keyframes iconStayUpright {
+    from {
+        transform: rotate(0deg) translateY(-160px) rotate(0deg);
     }
 
-    100% {
-        transform: rotate(480deg) translateX(180px) rotate(-480deg);
+    to {
+        transform: rotate(360deg) translateY(-160px) rotate(-360deg);
     }
 }
 
-@keyframes orbit3 {
-    0% {
-        transform: rotate(240deg) translateX(160px) rotate(-240deg);
+/* Override per-icon to set their fixed starting angle */
+.single-ring .orbit-icon:nth-child(1) {
+    animation: icon0 14s linear infinite;
+}
+
+.single-ring .orbit-icon:nth-child(2) {
+    animation: icon90 14s linear infinite;
+}
+
+.single-ring .orbit-icon:nth-child(3) {
+    animation: icon180 14s linear infinite;
+}
+
+.single-ring .orbit-icon:nth-child(4) {
+    animation: icon270 14s linear infinite;
+}
+
+@keyframes icon0 {
+    from {
+        transform: rotate(0deg) translateY(-160px) rotate(0deg);
     }
 
-    100% {
-        transform: rotate(600deg) translateX(160px) rotate(-600deg);
+    to {
+        transform: rotate(360deg) translateY(-160px) rotate(-300deg);
+    }
+}
+
+@keyframes icon90 {
+    from {
+        transform: rotate(90deg) translateY(-160px) rotate(-90deg);
+    }
+
+    to {
+        transform: rotate(450deg) translateY(-160px) rotate(-390deg);
+    }
+}
+
+@keyframes icon180 {
+    from {
+        transform: rotate(180deg) translateY(-160px) rotate(-180deg);
+    }
+
+    to {
+        transform: rotate(540deg) translateY(-160px) rotate(-480deg);
+    }
+}
+
+@keyframes icon270 {
+    from {
+        transform: rotate(270deg) translateY(-160px) rotate(-270deg);
+    }
+
+    to {
+        transform: rotate(630deg) translateY(-160px) rotate(-570deg);
+    }
+}
+
+@keyframes ringRotate {
+    from {
+        transform: translate(-50%, -50%) rotate(0deg);
+    }
+
+    to {
+        transform: translate(-50%, -50%) rotate(360deg);
+    }
+}
+
+@keyframes iconCounter {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(-360deg);
     }
 }
 

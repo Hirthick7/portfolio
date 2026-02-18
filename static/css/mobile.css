@@ -427,7 +427,7 @@ body {
     transform: translateY(-2px);
 }
 
-/* Floating Orb - Mobile Optimized */
+/* Tech Orbit - Mobile Optimized */
 .hero-3d {
     display: flex;
     align-items: center;
@@ -436,121 +436,179 @@ body {
     order: -1;
 }
 
-.rotating-gear {
-    width: 250px;
-    height: 250px;
+.tech-orbit-wrapper {
+    width: 280px;
+    height: 280px;
     position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
-/* Central Orb */
-.gear-face:nth-child(1) {
+.tech-core {
     position: absolute;
-    width: 120px;
-    height: 120px;
-    background: radial-gradient(circle at 30% 30%, var(--gold-light), var(--gold-primary));
+    width: 90px;
+    height: 90px;
+    background: radial-gradient(circle at 35% 35%, rgba(244, 208, 63, 0.25), rgba(212, 175, 55, 0.08));
     border-radius: 50%;
-    box-shadow:
-        0 0 40px rgba(212, 175, 55, 0.6),
-        0 0 60px rgba(212, 175, 55, 0.4),
-        inset 0 0 30px rgba(255, 255, 255, 0.2);
-    animation: floatOrb 6s ease-in-out infinite, pulse 3s ease-in-out infinite;
+    border: 2px solid rgba(212, 175, 55, 0.5);
+    box-shadow: 0 0 30px rgba(212, 175, 55, 0.4), 0 0 60px rgba(212, 175, 55, 0.2);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 3rem;
-    color: var(--navy-dark);
+    animation: corePulse 4s ease-in-out infinite;
+    z-index: 5;
 }
 
-/* Orbiting Particles */
-.gear-face:nth-child(2),
-.gear-face:nth-child(3),
-.gear-face:nth-child(4) {
-    position: absolute;
-    width: 40px;
-    height: 40px;
-    background: linear-gradient(135deg, rgba(212, 175, 55, 0.8), rgba(244, 208, 63, 0.6));
-    border-radius: 50%;
-    box-shadow: 0 0 20px rgba(212, 175, 55, 0.8);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.5rem;
-}
-
-.gear-face:nth-child(2) {
-    animation: orbit1 8s linear infinite;
-}
-
-.gear-face:nth-child(3) {
-    animation: orbit2 10s linear infinite;
-}
-
-.gear-face:nth-child(4) {
-    animation: orbit3 12s linear infinite;
-}
-
-@keyframes floatOrb {
+@keyframes corePulse {
 
     0%,
     100% {
-        transform: translateY(0px);
-    }
-
-    50% {
-        transform: translateY(-15px);
-    }
-}
-
-@keyframes pulse {
-
-    0%,
-    100% {
+        box-shadow: 0 0 30px rgba(212, 175, 55, 0.4), 0 0 60px rgba(212, 175, 55, 0.2);
         transform: scale(1);
-        box-shadow:
-            0 0 40px rgba(212, 175, 55, 0.6),
-            0 0 60px rgba(212, 175, 55, 0.4),
-            inset 0 0 30px rgba(255, 255, 255, 0.2);
     }
 
     50% {
-        transform: scale(1.05);
-        box-shadow:
-            0 0 60px rgba(212, 175, 55, 0.8),
-            0 0 80px rgba(212, 175, 55, 0.6),
-            inset 0 0 40px rgba(255, 255, 255, 0.3);
+        box-shadow: 0 0 50px rgba(212, 175, 55, 0.7), 0 0 90px rgba(212, 175, 55, 0.35);
+        transform: scale(1.06);
     }
 }
 
-@keyframes orbit1 {
-    0% {
-        transform: rotate(0deg) translateX(90px) rotate(0deg);
+.orbit-ring {
+    position: absolute;
+    border-radius: 50%;
+    border: 1px dashed rgba(212, 175, 55, 0.2);
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.orbit-icon {
+    position: absolute;
+    top: -23px;
+    width: 46px;
+    height: 46px;
+    background: rgba(10, 17, 40, 0.85);
+    border: 2px solid rgba(212, 175, 55, 0.45);
+    border-radius: 50%;
+    padding: 5px;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.4), 0 0 12px rgba(212, 175, 55, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.orbit-icon svg {
+    width: 30px;
+    height: 30px;
+}
+
+/* Single orbit ring — mobile */
+.single-ring {
+    position: absolute;
+    width: 260px;
+    height: 260px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    animation: singleRingRotate 14s linear infinite;
+}
+
+.single-ring .orbit-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: -23px;
+    margin-left: -23px;
+}
+
+.single-ring .orbit-icon:nth-child(1) {
+    animation: icon0m 14s linear infinite;
+}
+
+.single-ring .orbit-icon:nth-child(2) {
+    animation: icon90m 14s linear infinite;
+}
+
+.single-ring .orbit-icon:nth-child(3) {
+    animation: icon180m 14s linear infinite;
+}
+
+.single-ring .orbit-icon:nth-child(4) {
+    animation: icon270m 14s linear infinite;
+}
+
+@keyframes singleRingRotate {
+    from {
+        transform: translate(-50%, -50%) rotate(0deg);
     }
 
-    100% {
-        transform: rotate(360deg) translateX(90px) rotate(-360deg);
+    to {
+        transform: translate(-50%, -50%) rotate(360deg);
     }
 }
 
-@keyframes orbit2 {
-    0% {
-        transform: rotate(120deg) translateX(110px) rotate(-120deg);
+@keyframes icon0m {
+    from {
+        transform: rotate(0deg) translateY(-110px) rotate(0deg);
     }
 
-    100% {
-        transform: rotate(480deg) translateX(110px) rotate(-480deg);
+    to {
+        transform: rotate(360deg) translateY(-110px) rotate(-300deg);
     }
 }
 
-@keyframes orbit3 {
-    0% {
-        transform: rotate(240deg) translateX(100px) rotate(-240deg);
+@keyframes icon90m {
+    from {
+        transform: rotate(90deg) translateY(-110px) rotate(-90deg);
     }
 
-    100% {
-        transform: rotate(600deg) translateX(100px) rotate(-600deg);
+    to {
+        transform: rotate(450deg) translateY(-110px) rotate(-390deg);
+    }
+}
+
+@keyframes icon180m {
+    from {
+        transform: rotate(180deg) translateY(-110px) rotate(-180deg);
+    }
+
+    to {
+        transform: rotate(540deg) translateY(-110px) rotate(-480deg);
+    }
+}
+
+@keyframes icon270m {
+    from {
+        transform: rotate(270deg) translateY(-110px) rotate(-270deg);
+    }
+
+    to {
+        transform: rotate(630deg) translateY(-110px) rotate(-570deg);
+    }
+
+}
+
+@keyframes ringRotate {
+    from {
+        transform: translate(-50%, -50%) rotate(0deg);
+    }
+
+    to {
+        transform: translate(-50%, -50%) rotate(360deg);
+    }
+}
+
+@keyframes iconCounter {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(-360deg);
     }
 }
 
