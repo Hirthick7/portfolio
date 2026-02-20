@@ -3,428 +3,7 @@
 {% block title %}Admin Dashboard - Hirthick M{% endblock %}
 
 {% block extra_css %}
-<style>
-    /* ── Admin Layout ── */
-    .admin-wrapper {
-        min-height: 100vh;
-        padding: 6rem 1.5rem 4rem;
-        /* 6rem top clears the fixed navbar */
-        position: relative;
-        z-index: 2;
-        /* sit above floating-shapes (z-index: 0) */
-        background: rgba(10, 17, 40, 0.6);
-        /* block shapes from bleeding through */
-    }
-
-    .admin-header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        max-width: 1200px;
-        margin: 0 auto 2.5rem;
-        flex-wrap: wrap;
-        gap: 1rem;
-    }
-
-    .admin-header h1 {
-        font-family: var(--font-serif);
-        color: var(--gold-primary);
-        font-size: 2.2rem;
-        margin: 0;
-    }
-
-    .admin-header h1 span {
-        font-size: 1rem;
-        color: var(--white-muted);
-        font-family: var(--font-sans);
-        font-weight: 400;
-        display: block;
-        margin-top: 0.2rem;
-    }
-
-    .admin-logout-btn {
-        padding: 0.6rem 1.4rem;
-        background: rgba(220, 53, 69, 0.15);
-        border: 1px solid rgba(220, 53, 69, 0.4);
-        color: #ff6b7a;
-        border-radius: 8px;
-        text-decoration: none;
-        font-size: 0.9rem;
-        font-weight: 600;
-        transition: background 0.2s;
-    }
-
-    .admin-logout-btn:hover {
-        background: rgba(220, 53, 69, 0.3);
-    }
-
-    /* ── Stats Bar ── */
-    .admin-stats {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-        gap: 1.2rem;
-        max-width: 1200px;
-        margin: 0 auto 2.5rem;
-    }
-
-    .stat-card {
-        background: rgba(10, 17, 40, 0.8);
-        border: 1px solid rgba(212, 175, 55, 0.2);
-        border-radius: 12px;
-        padding: 1.5rem;
-        text-align: center;
-        backdrop-filter: blur(10px);
-    }
-
-    .stat-card .stat-num {
-        font-size: 2.5rem;
-        font-weight: 700;
-        color: var(--gold-primary);
-        line-height: 1;
-    }
-
-    .stat-card .stat-label {
-        color: var(--white-muted);
-        font-size: 0.85rem;
-        margin-top: 0.4rem;
-        text-transform: uppercase;
-        letter-spacing: 0.08em;
-    }
-
-    /* ── Tab Navigation ── */
-    .admin-tabs {
-        display: flex;
-        gap: 0.5rem;
-        max-width: 1200px;
-        margin: 0 auto 2rem;
-        border-bottom: 1px solid rgba(212, 175, 55, 0.2);
-        padding-bottom: 0;
-        flex-wrap: wrap;
-    }
-
-    .admin-tab-btn {
-        padding: 0.75rem 1.5rem;
-        background: transparent;
-        border: none;
-        border-bottom: 3px solid transparent;
-        color: var(--white-muted);
-        font-size: 0.95rem;
-        font-weight: 600;
-        cursor: pointer;
-        transition: color 0.2s, border-color 0.2s;
-        margin-bottom: -1px;
-    }
-
-    .admin-tab-btn.active,
-    .admin-tab-btn:hover {
-        color: var(--gold-primary);
-        border-bottom-color: var(--gold-primary);
-    }
-
-    /* ── Tab Panels ── */
-    .admin-panel {
-        display: none;
-        max-width: 1200px;
-        margin: 0 auto;
-    }
-
-    .admin-panel.active {
-        display: block;
-    }
-
-    /* ── Section Cards ── */
-    .admin-section {
-        background: rgba(10, 17, 40, 0.8);
-        border: 1px solid rgba(212, 175, 55, 0.2);
-        border-radius: 16px;
-        padding: 2rem;
-        margin-bottom: 2rem;
-        backdrop-filter: blur(10px);
-    }
-
-    .admin-section h2 {
-        color: var(--gold-primary);
-        font-size: 1.3rem;
-        margin: 0 0 1.5rem;
-        padding-bottom: 0.75rem;
-        border-bottom: 1px solid rgba(212, 175, 55, 0.15);
-        display: flex;
-        align-items: center;
-        gap: 0.6rem;
-    }
-
-    /* ── Forms ── */
-    .admin-form {
-        display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 1rem;
-        align-items: end;
-    }
-
-    .admin-form.single-col {
-        grid-template-columns: 1fr;
-    }
-
-    .form-group {
-        display: flex;
-        flex-direction: column;
-        gap: 0.4rem;
-    }
-
-    .form-group label {
-        color: var(--gold-light);
-        font-size: 0.8rem;
-        font-weight: 600;
-        letter-spacing: 0.08em;
-        text-transform: uppercase;
-    }
-
-    .form-group input,
-    .form-group select,
-    .form-group textarea {
-        padding: 0.7rem 0.9rem;
-        background: rgba(255, 255, 255, 0.05);
-        border: 1px solid rgba(212, 175, 55, 0.25);
-        border-radius: 8px;
-        color: #ffffff;
-        font-size: 0.95rem;
-        transition: border-color 0.3s;
-        font-family: inherit;
-    }
-
-    .form-group input:focus,
-    .form-group select:focus,
-    .form-group textarea:focus {
-        outline: none;
-        background: rgba(255, 255, 255, 0.08);
-        border-color: var(--gold-primary);
-        box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.12);
-        color: #ffffff;
-    }
-
-    /* Prevent browser autofill from overriding dark background */
-    .form-group input:-webkit-autofill,
-    .form-group input:-webkit-autofill:hover,
-    .form-group input:-webkit-autofill:focus {
-        -webkit-text-fill-color: #ffffff;
-        -webkit-box-shadow: 0 0 0px 1000px #1a2240 inset;
-        transition: background-color 5000s ease-in-out 0s;
-    }
-
-    .form-group select option {
-        background: #0a1128;
-    }
-
-    .form-group textarea {
-        resize: vertical;
-        min-height: 80px;
-    }
-
-    .btn-add {
-        padding: 0.75rem 1.5rem;
-        background: linear-gradient(135deg, #d4af37, #f0d060);
-        color: #0a1128;
-        border: none;
-        border-radius: 8px;
-        font-size: 0.95rem;
-        font-weight: 700;
-        cursor: pointer;
-        transition: transform 0.2s, box-shadow 0.2s;
-        white-space: nowrap;
-        align-self: flex-end;
-    }
-
-    .btn-add:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(212, 175, 55, 0.35);
-    }
-
-    /* ── Tables ── */
-    .admin-table-wrap {
-        overflow-x: auto;
-        margin-top: 1.5rem;
-    }
-
-    .admin-table {
-        width: 100%;
-        border-collapse: collapse;
-        font-size: 0.9rem;
-    }
-
-    .admin-table th {
-        background: rgba(212, 175, 55, 0.1);
-        color: var(--gold-primary);
-        padding: 0.75rem 1rem;
-        text-align: left;
-        font-size: 0.8rem;
-        letter-spacing: 0.08em;
-        text-transform: uppercase;
-        white-space: nowrap;
-    }
-
-    .admin-table td {
-        padding: 0.85rem 1rem;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        color: var(--white-soft);
-        vertical-align: middle;
-    }
-
-    .admin-table tr:last-child td {
-        border-bottom: none;
-    }
-
-    .admin-table tr:hover td {
-        background: rgba(212, 175, 55, 0.04);
-    }
-
-    .badge {
-        display: inline-block;
-        padding: 0.25rem 0.7rem;
-        border-radius: 20px;
-        font-size: 0.78rem;
-        font-weight: 600;
-        background: rgba(212, 175, 55, 0.15);
-        color: var(--gold-primary);
-        border: 1px solid rgba(212, 175, 55, 0.3);
-    }
-
-    .progress-mini {
-        display: flex;
-        align-items: center;
-        gap: 0.6rem;
-    }
-
-    .progress-mini-bar {
-        flex: 1;
-        height: 6px;
-        background: rgba(255, 255, 255, 0.1);
-        border-radius: 3px;
-        overflow: hidden;
-        min-width: 80px;
-    }
-
-    .progress-mini-fill {
-        height: 100%;
-        background: linear-gradient(90deg, #d4af37, #f0d060);
-        border-radius: 3px;
-    }
-
-    .btn-delete {
-        padding: 0.35rem 0.8rem;
-        background: rgba(220, 53, 69, 0.12);
-        border: 1px solid rgba(220, 53, 69, 0.35);
-        color: #ff6b7a;
-        border-radius: 6px;
-        font-size: 0.82rem;
-        cursor: pointer;
-        transition: background 0.2s;
-    }
-
-    .btn-delete:hover {
-        background: rgba(220, 53, 69, 0.28);
-    }
-
-    .empty-state {
-        text-align: center;
-        padding: 2.5rem;
-        color: var(--white-muted);
-    }
-
-    .empty-state i {
-        font-size: 2.5rem;
-        color: rgba(212, 175, 55, 0.3);
-        margin-bottom: 0.75rem;
-        display: block;
-    }
-
-    /* ── Messages ── */
-    .message-card {
-        background: rgba(255, 255, 255, 0.03);
-        border: 1px solid rgba(255, 255, 255, 0.07);
-        border-radius: 10px;
-        padding: 1.2rem 1.4rem;
-        margin-bottom: 1rem;
-    }
-
-    .message-card:last-child {
-        margin-bottom: 0;
-    }
-
-    .message-meta {
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-start;
-        margin-bottom: 0.6rem;
-        flex-wrap: wrap;
-        gap: 0.4rem;
-    }
-
-    .message-sender {
-        font-weight: 600;
-        color: var(--gold-primary);
-    }
-
-    .message-email {
-        color: var(--white-muted);
-        font-size: 0.85rem;
-    }
-
-    .message-date {
-        color: var(--white-muted);
-        font-size: 0.8rem;
-    }
-
-    .message-body {
-        color: var(--white-soft);
-        line-height: 1.7;
-        font-size: 0.92rem;
-        white-space: pre-wrap;
-    }
-
-    .unread-dot {
-        display: inline-block;
-        width: 8px;
-        height: 8px;
-        background: var(--gold-primary);
-        border-radius: 50%;
-        margin-right: 0.4rem;
-    }
-
-    /* ── Flash ── */
-    .admin-flash {
-        max-width: 1200px;
-        margin: 0 auto 1.5rem;
-    }
-
-    .flash-msg {
-        padding: 0.75rem 1.2rem;
-        border-radius: 8px;
-        font-size: 0.9rem;
-        margin-bottom: 0.5rem;
-    }
-
-    .flash-msg.error {
-        background: rgba(220, 53, 69, 0.15);
-        border: 1px solid rgba(220, 53, 69, 0.4);
-        color: #ff6b7a;
-    }
-
-    .flash-msg.success {
-        background: rgba(40, 167, 69, 0.15);
-        border: 1px solid rgba(40, 167, 69, 0.4);
-        color: #5cb85c;
-    }
-
-    .cert-url-link {
-        color: var(--gold-primary);
-        text-decoration: none;
-        font-size: 0.85rem;
-    }
-
-    .cert-url-link:hover {
-        text-decoration: underline;
-    }
-</style>
+<!-- Admin styles loaded via style.css/mobile.css -->
 {% endblock %}
 
 {% block content %}
@@ -561,12 +140,15 @@
                                         skill.proficiency }}%</span>
                                 </div>
                             </td>
-                            <td>
+                            <td style="display: flex; gap: 0.5rem;">
+                                <button onclick="openEditSkill('{{ skill._id|string }}')" class="btn-edit" title="Edit">
+                                    <i class="fas fa-pencil-alt"></i>
+                                </button>
                                 <form method="POST"
                                     action="{{ url_for('admin_delete_skill', skill_id=skill._id|string) }}"
                                     style="display:inline;" onsubmit="return confirm('Delete skill {{ skill.name }}?')">
-                                    <button type="submit" class="btn-delete">
-                                        <i class="fas fa-trash"></i> Delete
+                                    <button type="submit" class="btn-delete" title="Delete">
+                                        <i class="fas fa-trash"></i>
                                     </button>
                                 </form>
                             </td>
@@ -656,13 +238,16 @@
                                 <span style="color:var(--white-muted);">—</span>
                                 {% endif %}
                             </td>
-                            <td>
+                            <td style="display: flex; gap: 0.5rem;">
+                                <button onclick="openEditCert('{{ cert._id|string }}')" class="btn-edit" title="Edit">
+                                    <i class="fas fa-pencil-alt"></i>
+                                </button>
                                 <form method="POST"
                                     action="{{ url_for('admin_delete_certificate', cert_id=cert._id|string) }}"
                                     style="display:inline;"
                                     onsubmit="return confirm('Delete certificate {{ cert.title }}?')">
-                                    <button type="submit" class="btn-delete">
-                                        <i class="fas fa-trash"></i> Delete
+                                    <button type="submit" class="btn-delete" title="Delete">
+                                        <i class="fas fa-trash"></i>
                                     </button>
                                 </form>
                             </td>
@@ -765,13 +350,17 @@
                                         class="fas fa-external-link-alt"></i> Demo</a>
                                 {% else %}<span style="color:var(--white-muted);">—</span>{% endif %}
                             </td>
-                            <td>
+                            <td style="display: flex; gap: 0.5rem;">
+                                <button onclick="openEditProject('{{ proj._id|string }}')" class="btn-edit"
+                                    title="Edit">
+                                    <i class="fas fa-pencil-alt"></i>
+                                </button>
                                 <form method="POST"
                                     action="{{ url_for('admin_delete_project', project_id=proj._id|string) }}"
                                     style="display:inline;"
                                     onsubmit="return confirm('Delete project {{ proj.title }}?')">
-                                    <button type="submit" class="btn-delete">
-                                        <i class="fas fa-trash"></i> Delete
+                                    <button type="submit" class="btn-delete" title="Delete">
+                                        <i class="fas fa-trash"></i>
                                     </button>
                                 </form>
                             </td>
@@ -818,6 +407,115 @@
         </div>
     </div>
 
+    <!-- Edit Skill Modal -->
+    <div id="modal-edit-skill" class="admin-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-pencil-alt"></i> Edit Skill</h2>
+                <button onclick="closeModal('modal-edit-skill')" class="modal-close">&times;</button>
+            </div>
+            <form id="form-edit-skill" method="POST">
+                <div class="admin-form single-col">
+                    <div class="form-group">
+                        <label>Skill Name *</label>
+                        <input type="text" id="edit-skill-name" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Category *</label>
+                        <select id="edit-skill-category" name="category" required>
+                            <option value="Web Development">Web Development</option>
+                            <option value="Backend Development">Backend Development</option>
+                            <option value="Database Management">Database Management</option>
+                            <option value="AI & Automation">AI & Automation</option>
+                            <option value="UI/UX Design">UI/UX Design</option>
+                            <option value="Tools & Technologies">Tools & Technologies</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Proficiency (0-100) *</label>
+                        <input type="number" id="edit-skill-proficiency" name="proficiency" min="0" max="100" required>
+                    </div>
+                    <button type="submit" class="btn-add">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Edit Certificate Modal -->
+    <div id="modal-edit-cert" class="admin-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-pencil-alt"></i> Edit Certificate</h2>
+                <button onclick="closeModal('modal-edit-cert')" class="modal-close">&times;</button>
+            </div>
+            <form id="form-edit-cert" method="POST">
+                <div class="admin-form single-col">
+                    <div class="form-group">
+                        <label>Certificate Title *</label>
+                        <input type="text" id="edit-cert-title" name="title" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Issuing Organisation *</label>
+                        <input type="text" id="edit-cert-issuer" name="issuer" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Issue Date</label>
+                        <input type="text" id="edit-cert-date" name="issue_date">
+                    </div>
+                    <div class="form-group">
+                        <label>Credential URL</label>
+                        <input type="text" id="edit-cert-url" name="credential_url">
+                    </div>
+                    <div class="form-group">
+                        <label>Description (optional)</label>
+                        <textarea id="edit-cert-desc" name="description"></textarea>
+                    </div>
+                    <button type="submit" class="btn-add">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Edit Project Modal -->
+    <div id="modal-edit-project" class="admin-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-pencil-alt"></i> Edit Project</h2>
+                <button onclick="closeModal('modal-edit-project')" class="modal-close">&times;</button>
+            </div>
+            <form id="form-edit-project" method="POST">
+                <div class="admin-form single-col">
+                    <div class="form-group">
+                        <label>Project Title *</label>
+                        <input type="text" id="edit-proj-title" name="title" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Icon (Font Awesome class)</label>
+                        <input type="text" id="edit-proj-icon" name="icon">
+                    </div>
+                    <div class="form-group">
+                        <label>GitHub URL</label>
+                        <input type="text" id="edit-proj-github" name="github_url">
+                    </div>
+                    <div class="form-group">
+                        <label>Live Demo URL (optional)</label>
+                        <input type="text" id="edit-proj-live" name="live_url">
+                    </div>
+                    <div class="form-group">
+                        <label>Tags (comma-separated) *</label>
+                        <input type="text" id="edit-proj-tags" name="tags" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Description *</label>
+                        <textarea id="edit-proj-desc" name="description" required></textarea>
+                    </div>
+                    <button type="submit" class="btn-add">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
 </div>
 {% endblock %}
 
@@ -835,6 +533,9 @@
         // Show selected
         document.getElementById('panel-' + tab).classList.add('active');
         btn.classList.add('active');
+
+        // Update URL hash without scrolling
+        history.pushState(null, null, '#' + tab);
     }
 
     // Auto-open tab based on URL hash
@@ -845,5 +546,86 @@
             showTab(hash, document.querySelectorAll('.admin-tab-btn')[tabs[hash]]);
         }
     });
+
+    // Modal Logic
+    function openModal(id) {
+        document.getElementById(id).classList.add('active');
+        document.body.style.overflow = 'hidden'; // Prevent background scroll
+    }
+
+    function closeModal(id) {
+        document.getElementById(id).classList.remove('active');
+        document.body.style.overflow = 'auto';
+    }
+
+    // Edit Skill
+    function openEditSkill(id) {
+        fetch(`/admin/skills/edit/${id}`)
+            .then(res => res.json())
+            .then(res => {
+                if (res.success) {
+                    const skill = res.data;
+                    document.getElementById('edit-skill-name').value = skill.name;
+                    document.getElementById('edit-skill-category').value = skill.category;
+                    document.getElementById('edit-skill-proficiency').value = skill.proficiency;
+                    document.getElementById('form-edit-skill').action = `/admin/skills/edit/${id}`;
+                    openModal('modal-edit-skill');
+                } else {
+                    alert('Error: ' + res.error);
+                }
+            })
+            .catch(err => alert('Failed to fetch data: ' + err));
+    }
+
+    // Edit Certificate
+    function openEditCert(id) {
+        fetch(`/admin/certificates/edit/${id}`)
+            .then(res => res.json())
+            .then(res => {
+                if (res.success) {
+                    const cert = res.data;
+                    document.getElementById('edit-cert-title').value = cert.title;
+                    document.getElementById('edit-cert-issuer').value = cert.issuer;
+                    document.getElementById('edit-cert-date').value = cert.issue_date || '';
+                    document.getElementById('edit-cert-url').value = cert.credential_url || '';
+                    document.getElementById('edit-cert-desc').value = cert.description || '';
+                    document.getElementById('form-edit-cert').action = `/admin/certificates/edit/${id}`;
+                    openModal('modal-edit-cert');
+                } else {
+                    alert('Error: ' + res.error);
+                }
+            })
+            .catch(err => alert('Failed to fetch data: ' + err));
+    }
+
+    // Edit Project
+    function openEditProject(id) {
+        fetch(`/admin/projects/edit/${id}`)
+            .then(res => res.json())
+            .then(res => {
+                if (res.success) {
+                    const proj = res.data;
+                    document.getElementById('edit-proj-title').value = proj.title;
+                    document.getElementById('edit-proj-desc').value = proj.description;
+                    document.getElementById('edit-proj-tags').value = proj.tags || '';
+                    document.getElementById('edit-proj-github').value = proj.github_url || '';
+                    document.getElementById('edit-proj-live').value = proj.live_url || '';
+                    document.getElementById('edit-proj-icon').value = proj.icon || '';
+                    document.getElementById('form-edit-project').action = `/admin/projects/edit/${id}`;
+                    openModal('modal-edit-project');
+                } else {
+                    alert('Error: ' + res.error);
+                }
+            })
+            .catch(err => alert('Failed to fetch data: ' + err));
+    }
+
+    // Close on outside click
+    window.onclick = function (event) {
+        if (event.target.classList.contains('admin-modal')) {
+            event.target.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+    }
 </script>
 {% endblock %}

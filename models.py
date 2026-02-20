@@ -99,6 +99,29 @@ class Skill:
         return list(collection.find().sort([('category', 1), ('name', 1)]))
     
     @staticmethod
+    def get_by_id(skill_id):
+        """Get a skill by its ObjectId string"""
+        db = Database.get_db()
+        collection = db[Skill.collection_name]
+        return collection.find_one({'_id': ObjectId(skill_id)})
+
+    @staticmethod
+    def update(skill_id, name, category, proficiency):
+        """Update a skill by its ObjectId string"""
+        db = Database.get_db()
+        collection = db[Skill.collection_name]
+        collection.update_one(
+            {'_id': ObjectId(skill_id)},
+            {
+                '$set': {
+                    'name': name,
+                    'category': category,
+                    'proficiency': int(proficiency)
+                }
+            }
+        )
+
+    @staticmethod
     def delete(skill_id):
         """Delete a skill by its ObjectId string"""
         db = Database.get_db()
@@ -145,6 +168,31 @@ class Certificate:
         return list(collection.find().sort('created_at', -1))
     
     @staticmethod
+    def get_by_id(cert_id):
+        """Get a certificate by its ObjectId string"""
+        db = Database.get_db()
+        collection = db[Certificate.collection_name]
+        return collection.find_one({'_id': ObjectId(cert_id)})
+
+    @staticmethod
+    def update(cert_id, title, issuer, issue_date, credential_url, description):
+        """Update a certificate by its ObjectId string"""
+        db = Database.get_db()
+        collection = db[Certificate.collection_name]
+        collection.update_one(
+            {'_id': ObjectId(cert_id)},
+            {
+                '$set': {
+                    'title': title,
+                    'issuer': issuer,
+                    'issue_date': issue_date,
+                    'credential_url': credential_url,
+                    'description': description
+                }
+            }
+        )
+
+    @staticmethod
     def delete(cert_id):
         """Delete a certificate by its ObjectId string"""
         db = Database.get_db()
@@ -180,6 +228,32 @@ class Project:
         db = Database.get_db()
         collection = db[Project.collection_name]
         return list(collection.find().sort('created_at', -1))
+
+    @staticmethod
+    def get_by_id(project_id):
+        """Get a project by its ObjectId string"""
+        db = Database.get_db()
+        collection = db[Project.collection_name]
+        return collection.find_one({'_id': ObjectId(project_id)})
+
+    @staticmethod
+    def update(project_id, title, description, tags, github_url, live_url, icon):
+        """Update a project by its ObjectId string"""
+        db = Database.get_db()
+        collection = db[Project.collection_name]
+        collection.update_one(
+            {'_id': ObjectId(project_id)},
+            {
+                '$set': {
+                    'title': title,
+                    'description': description,
+                    'tags': [t.strip() for t in tags.split(',') if t.strip()],
+                    'github_url': github_url,
+                    'live_url': live_url,
+                    'icon': icon or 'fa-code'
+                }
+            }
+        )
 
     @staticmethod
     def delete(project_id):

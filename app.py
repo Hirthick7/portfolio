@@ -298,6 +298,42 @@ def admin_delete_skill(skill_id):
     return redirect(url_for('admin_dashboard') + '#skills')
 
 
+@app.route('/admin/skills/edit/<skill_id>', methods=['GET', 'POST'])
+@admin_required
+def admin_edit_skill(skill_id):
+    """Edit a skill"""
+    if request.method == 'POST':
+        name = request.form.get('name', '').strip()
+        category = request.form.get('category', '').strip()
+        proficiency = request.form.get('proficiency', '0').strip()
+
+        if not name or not category:
+            flash('Skill name and category are required.', 'error')
+            return redirect(url_for('admin_dashboard') + '#skills')
+
+        try:
+            proficiency = max(0, min(100, int(proficiency)))
+        except ValueError:
+            proficiency = 0
+
+        try:
+            Skill.update(skill_id, name, category, proficiency)
+            flash(f'Skill "{name}" updated successfully!', 'success')
+        except Exception as e:
+            flash(f'Error updating skill: {e}', 'error')
+        return redirect(url_for('admin_dashboard') + '#skills')
+    
+    # GET request for modal data
+    try:
+        skill = Skill.get_by_id(skill_id)
+        if skill:
+            skill['_id'] = str(skill['_id'])
+            return {'success': True, 'data': skill}
+        return {'success': False, 'error': 'Skill not found'}, 404
+    except Exception as e:
+        return {'success': False, 'error': str(e)}, 500
+
+
 @app.route('/admin/certificates/add', methods=['POST'])
 @admin_required
 def admin_add_certificate():
@@ -331,6 +367,39 @@ def admin_delete_certificate(cert_id):
     except Exception as e:
         flash(f'Error deleting certificate: {e}', 'error')
     return redirect(url_for('admin_dashboard') + '#certificates')
+
+
+@app.route('/admin/certificates/edit/<cert_id>', methods=['GET', 'POST'])
+@admin_required
+def admin_edit_certificate(cert_id):
+    """Edit a certificate"""
+    if request.method == 'POST':
+        title = request.form.get('title', '').strip()
+        issuer = request.form.get('issuer', '').strip()
+        issue_date = request.form.get('issue_date', '').strip()
+        credential_url = request.form.get('credential_url', '').strip()
+        description = request.form.get('description', '').strip()
+
+        if not title or not issuer:
+            flash('Certificate title and issuer are required.', 'error')
+            return redirect(url_for('admin_dashboard') + '#certificates')
+
+        try:
+            Certificate.update(cert_id, title, issuer, issue_date, credential_url, description)
+            flash(f'Certificate "{title}" updated successfully!', 'success')
+        except Exception as e:
+            flash(f'Error updating certificate: {e}', 'error')
+        return redirect(url_for('admin_dashboard') + '#certificates')
+
+    # GET request for modal data
+    try:
+        cert = Certificate.get_by_id(cert_id)
+        if cert:
+            cert['_id'] = str(cert['_id'])
+            return {'success': True, 'data': cert}
+        return {'success': False, 'error': 'Certificate not found'}, 404
+    except Exception as e:
+        return {'success': False, 'error': str(e)}, 500
 
 
 # ---------------------------------------------------------------------------
@@ -371,6 +440,43 @@ def admin_delete_project(project_id):
     except Exception as e:
         flash(f'Error deleting project: {e}', 'error')
     return redirect(url_for('admin_dashboard') + '#projects')
+
+
+@app.route('/admin/projects/edit/<project_id>', methods=['GET', 'POST'])
+@admin_required
+def admin_edit_project(project_id):
+    """Edit a project"""
+    if request.method == 'POST':
+        title = request.form.get('title', '').strip()
+        description = request.form.get('description', '').strip()
+        tags = request.form.get('tags', '').strip()
+        github_url = request.form.get('github_url', '').strip()
+        live_url = request.form.get('live_url', '').strip()
+        icon = request.form.get('icon', '').strip()
+
+        if not title or not description:
+            flash('Project title and description are required.', 'error')
+            return redirect(url_for('admin_dashboard') + '#projects')
+
+        try:
+            Project.update(project_id, title, description, tags, github_url, live_url, icon)
+            flash(f'Project "{title}" updated successfully!', 'success')
+        except Exception as e:
+            flash(f'Error updating project: {e}', 'error')
+        return redirect(url_for('admin_dashboard') + '#projects')
+
+    # GET request for modal data
+    try:
+        project = Project.get_by_id(project_id)
+        if project:
+            project['_id'] = str(project['_id'])
+            # tags is a list in DB, but form expects comma-separated string
+            if 'tags' in project and isinstance(project['tags'], list):
+                project['tags'] = ', '.join(project['tags'])
+            return {'success': True, 'data': project}
+        return {'success': False, 'error': 'Project not found'}, 404
+    except Exception as e:
+        return {'success': False, 'error': str(e)}, 500
 
 
 # ---------------------------------------------------------------------------
