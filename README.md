@@ -275,7 +275,7 @@ This project is created for personal portfolio purposes.
 **Hirthick M**
 - Email: mhirthick07@gmail.com
 - LinkedIn: [linkedin.com/in/hirthick-m](https://www.linkedin.com/in/hirthick-m)
-- GitHub: [github.com/hirthick-m](https://github.com/hirthick-m)
+- GitHub: [github.com/Hirthick7](https://github.com/Hirthick7)
 
 ---
 

@@ -417,8 +417,8 @@ def admin_add_project():
     live_url = request.form.get('live_url', '').strip()
     icon = request.form.get('icon', '').strip()
 
-    if not title or not description:
-        flash('Project title and description are required.', 'error')
+    if not title or not description or not github_url:
+        flash('Project title, description, and GitHub URL are required.', 'error')
         return redirect(url_for('admin_dashboard') + '#projects')
 
     try:
@@ -454,8 +454,8 @@ def admin_edit_project(project_id):
         live_url = request.form.get('live_url', '').strip()
         icon = request.form.get('icon', '').strip()
 
-        if not title or not description:
-            flash('Project title and description are required.', 'error')
+        if not title or not description or not github_url:
+            flash('Project title, description, and GitHub URL are required.', 'error')
             return redirect(url_for('admin_dashboard') + '#projects')
 
         try:
